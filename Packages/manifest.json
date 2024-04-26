@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.kylewbanks.scenerefattribute": "https://github.com/KyleBanks/scene-ref-attribute.git",
     "com.meta.xr.sdk.all": "64.0.0",
     "com.meta.xr.sdk.interaction.ovr.samples": "64.0.0",
     "com.unity.collab-proxy": "2.3.1",
