@@ -70,9 +70,10 @@ namespace Anchor
             await anchorDatabase.ClearSpatialAnchorFromDatabase();
         }
 
-        private async void HandleAnchorLoadCompleted(List<Guid> anchors)
+        private async void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> anchors)
         {
-            RuntimeData.activeAnchor = FindObjectOfType<OVRSpatialAnchor>();
+            // Receive first anchor found - the only one requested
+            RuntimeData.activeAnchor = anchors[0];
             
             if(RuntimeData.activeAnchor == null) return;
             var spatialAnchor = RuntimeData.activeAnchor.GetComponent<SpatialAnchor>();
