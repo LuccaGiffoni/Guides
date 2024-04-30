@@ -11,14 +11,8 @@ namespace Keyboard
     
         [SerializeField] public int buttonID;
 
-        private void Start()
-        {
-            button.onClick.AddListener(OnButtonClick);
-        }
+        private void Start() => button.onClick.AddListener(AppendKeyboardAction);
 
-        private void OnButtonClick()
-        {
-            numericKeyboard.OnButtonClick(buttonID);
-        }
+        private void AppendKeyboardAction() => numericKeyboard.OnButtonClick(buttonID);
     }
 }

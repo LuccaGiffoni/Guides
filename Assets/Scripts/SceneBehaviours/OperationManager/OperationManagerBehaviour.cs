@@ -8,8 +8,6 @@ using Scene;
 using SceneBehaviours.StepButtons;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace SceneBehaviours.OperationManager
 {
@@ -84,7 +82,7 @@ namespace SceneBehaviours.OperationManager
             stepNumberText.text = $"Passo {RuntimeData.selectedStep.StepIndex.ToString()} de {RuntimeData.steps.Steps.Count}";
         }
 
-        public async void MoveToStep(int index)
+        public void MoveToStep(int index)
         {
             RuntimeData.selectedStep = RuntimeData.steps.Steps[index - 1];
             

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Database.Entities;
-using PickPositions;
 using SceneBehaviours.OperationManager;
 using UnityEngine;
 

@@ -86,7 +86,7 @@ namespace SceneBehaviours.OperationOperator
             sceneTransitionManager.LoadSceneByIndex(0);
         }
         
-        public async void MoveToStep(int index)
+        public void MoveToStep(int index)
         {
             RuntimeData.selectedStepToOperate = RuntimeData.steps.Steps[index - 1];
             UpdatePanelInformation();

@@ -1,5 +1,4 @@
-﻿using System;
-using Database.Settings;
+﻿using Database.Settings;
 using KBCore.Refs;
 using SceneBehaviours.OperationManager;
 using UnityEngine;

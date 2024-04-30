@@ -1,6 +1,4 @@
-﻿using System;
-using KBCore.Refs;
-using SceneBehaviours.OperationManager;
+﻿using KBCore.Refs;
 using SceneBehaviours.OperationOperator;
 using TMPro;
 using UnityEngine;
@@ -15,7 +13,7 @@ namespace SceneBehaviours.StepButtons
 
         private void Start()
         {
-            operationOperatorBehaviour = FindObjectOfType<OperationOperatorBehaviour>();
+            operationOperatorBehaviour = FindFirstObjectByType<OperationOperatorBehaviour>();
             
             if(operationOperatorBehaviour != null) Debug.Log(operationOperatorBehaviour.gameObject.name);
         }

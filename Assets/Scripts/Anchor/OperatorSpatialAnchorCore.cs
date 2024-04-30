@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Database.Settings;
 using Helper;
 using KBCore.Refs;
 using Language;
 using Meta.XR.BuildingBlocks;
-using SceneBehaviours.OperationManager;
 using SceneBehaviours.OperationOperator;
 using UnityEngine;
 

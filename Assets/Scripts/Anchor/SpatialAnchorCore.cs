@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Database.Settings;
 using Helper;
 using KBCore.Refs;
@@ -70,18 +69,15 @@ namespace Anchor
             await anchorDatabase.ClearSpatialAnchorFromDatabase();
         }
 
-        private async void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> anchors)
+        private void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> anchors)
         {
-            // Receive first anchor found - the only one requested
             RuntimeData.activeAnchor = anchors[0];
             
             if(RuntimeData.activeAnchor == null) return;
             var spatialAnchor = RuntimeData.activeAnchor.GetComponent<SpatialAnchor>();
 
             if (RuntimeData.selectedOperation != null)
-            {
                 operationManagerBehaviour.CreatePickPositionForStep();
-            }
             
             spatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorLocalized, RuntimeData.activeAnchor.Uuid.ToString());
         }

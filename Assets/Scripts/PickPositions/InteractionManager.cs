@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Database.Settings;
 using Helper;
 using KBCore.Refs;
-using SceneBehaviours.OperationManager;
 using SceneBehaviours.OperationOperator;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PickPositions
 {
@@ -25,15 +22,15 @@ namespace PickPositions
         [SerializeField] private AudioClip success;
         [SerializeField] private AudioClip error;
         
-        private bool _isAlreadyTriggered;
+        private bool isAlreadyTriggered;
 
         private const string HandTag = "Hands";
 
         private void Start()
         {
-            _isAlreadyTriggered = false;
-            operationOperatorBehaviour = FindObjectOfType<OperationOperatorBehaviour>();
-            popupManager = FindObjectOfType<PopupManager>();
+            isAlreadyTriggered = false;
+            operationOperatorBehaviour = FindFirstObjectByType<OperationOperatorBehaviour>();
+            popupManager = FindFirstObjectByType<PopupManager>();
             ConfigureColor();
         }
 
@@ -58,12 +55,12 @@ namespace PickPositions
                 audioSource.clip = success;
                 audioSource.Play();
 
-                if (!_isAlreadyTriggered)
+                if (!isAlreadyTriggered)
                 {
                     operationOperatorBehaviour.UnlockNextButton();
                 }
 
-                _isAlreadyTriggered = true;
+                isAlreadyTriggered = true;
             }
             else
             {
