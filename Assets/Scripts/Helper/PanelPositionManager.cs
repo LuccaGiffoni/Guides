@@ -6,14 +6,14 @@ namespace Helper
 {
     public class PanelPositionManager : ValidatedMonoBehaviour
     {
-        [SerializeField, Scene] private OVRCameraRig mainCamera;
+        [SerializeField] private Camera centerEyeAnchor;
 
-        public void Start() => SetPanelPosition();
+        public void OnEnable() => SetPanelPosition();
 
         private void SetPanelPosition()
         {
-            transform.position = new Vector3(mainCamera.transform.position.x,
-                mainCamera.transform.position.y, mainCamera.transform.position.z + 0.65f);
+            transform.position = new Vector3(centerEyeAnchor.transform.position.x,
+                centerEyeAnchor.transform.position.y, centerEyeAnchor.transform.position.z + 0.65f);
         }
     }
 }

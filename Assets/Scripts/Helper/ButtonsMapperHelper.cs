@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Database.Settings;
 using KBCore.Refs;
 using Meta.XR.BuildingBlocks;
@@ -45,14 +46,9 @@ namespace Helper
             var prefab = spatialAnchorSpawnerBuildingBlock.AnchorPrefab;
             if (prefab == null) return;
             
-            for (var i = 0; i < prefab.transform.childCount; i++)
-            {
-                var childTransform = prefab.transform.GetChild(i);
-                
-                if(childTransform.gameObject.activeInHierarchy) childTransform.gameObject.SetActive(false);
-                else childTransform.gameObject.SetActive(true);
-            }
+            Destroy(prefab);
         }
+        
         private void ChangeVisibilityBasedOnActualVisibility(List<GameObject> mapperParent)
         {
             SetAllHelpersInactive();
