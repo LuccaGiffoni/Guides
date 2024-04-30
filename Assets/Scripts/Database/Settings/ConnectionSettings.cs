@@ -2,7 +2,7 @@
 {
     public static class ConnectionSettings
     {
-        public static string LocalServerAddress = "192.168.15.12";
+        public static string LocalServerAddress = "192.168.15.8";
         public static string apiUrl { get; private set; }
 
         public static string ConfigureAPIUrl()

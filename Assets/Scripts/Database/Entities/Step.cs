@@ -5,8 +5,8 @@ namespace Database.Entities
     [System.Serializable]
     public class Step
     {
-        public Guid StepID;
-        public Guid OperationID;
+        public int StepID;
+        public int OperationID;
         public string Description;
         public int StepIndex;
         public string PickPosition;

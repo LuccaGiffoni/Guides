@@ -6,7 +6,7 @@ namespace Database.Entities
     [Serializable]
     public class Operation
     {
-        public Guid OperationID;
+        public int OperationID;
         public Guid AnchorUuid = Guid.Empty;
         public string Description;
         public int Status;

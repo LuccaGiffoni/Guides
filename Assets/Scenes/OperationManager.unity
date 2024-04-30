@@ -3677,6 +3677,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 318090926546616899, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
   m_PrefabInstance: {fileID: 1310056271}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1310056274 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1605516632206019956, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
+  m_PrefabInstance: {fileID: 1310056271}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9f338034892c44ebb62d97894772f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1333538052
 GameObject:
   m_ObjectHideFlags: 0
@@ -6534,6 +6545,7 @@ GameObject:
   - component: {fileID: 4780612440186617469}
   - component: {fileID: 6671151779413493456}
   - component: {fileID: 1416267003116965577}
+  - component: {fileID: 7154195817198997264}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -19599,6 +19611,19 @@ MonoBehaviour:
   - {fileID: 651739702820307286}
   - {fileID: 651739702820307284}
   - {fileID: 651739702820307282}
+--- !u!114 &7154195817198997264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651739702820307295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7da2190b66f48154b85a8a0fea638cba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 1310056274}
 --- !u!1 &7223741620817506385
 GameObject:
   m_ObjectHideFlags: 0
