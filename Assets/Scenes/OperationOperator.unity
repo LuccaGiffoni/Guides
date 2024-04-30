@@ -1385,7 +1385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f0d17b646324944962eab67cb376d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 1963376589}
   followSpeed: 2
   offset: {x: 0, y: 0, z: 1}
 --- !u!1 &1333538052
@@ -1991,6 +1991,11 @@ PrefabInstance:
 --- !u!20 &1963376588 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 1344978003832548827, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
+  m_PrefabInstance: {fileID: 1963376587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1963376589 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4844746812934950759, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
   m_PrefabInstance: {fileID: 1963376587}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1968091514

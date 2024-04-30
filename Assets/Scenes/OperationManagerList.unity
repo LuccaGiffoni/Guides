@@ -685,7 +685,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &148200767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -698,7 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f0d17b646324944962eab67cb376d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 935426637}
   followSpeed: 2
   offset: {x: 0, y: 0, z: 1}
 --- !u!114 &148200768
@@ -2390,6 +2390,11 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 1344978003832548827, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
   m_PrefabInstance: {fileID: 935426635}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &935426637 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4844746812934950759, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
+  m_PrefabInstance: {fileID: 935426635}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &950142197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2895,7 +2900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1203001110
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3444,7 +3449,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1

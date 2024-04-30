@@ -26,7 +26,6 @@ namespace Helper
 
         public void HandleMappersVisibility()
         {
-
             switch (RuntimeData.currentCreativeMode)
             {
                 case OperationManagerState.None:
