@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Database.Entities
+﻿namespace Database.Entities
 {
     [System.Serializable]
     public class Step

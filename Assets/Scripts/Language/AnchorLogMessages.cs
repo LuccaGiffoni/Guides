@@ -9,6 +9,7 @@
             "There is an anchor saved in the database for this operation that has not been loaded yet. Load it by clicking 'B' or delete it - with the 'Y' button to create and save another anchor.";
         public static string anchorSavedToDatabase => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora salva no banco de dados!" : "Anchor saved to database!";
         public static string anchorClearedFromDatabase => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora removida do banco de dados!" : "Anchor removed from database!";
+        public static string anchorClearedFromDatabaseAndMemory => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora removida do banco de dados e da memória!" : "Anchor removed from database!";
         public static string anchorNotFoundOnDatabase => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora não encontrada no banco de dados!" : "Anchor not found on database!";
 
         public static string createdAnchorNotSavedYet => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora criada, mas não salva no banco de dados!" : "Anchor created, but not saved to database!";

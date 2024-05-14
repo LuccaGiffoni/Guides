@@ -50,8 +50,6 @@ namespace Database.Methods
                 return false;
             }
 
-            Debug.Log(DatabaseLogMessages.serverConnectionSucceeded);
-            Debug.Log(uwr.downloadHandler.text);
             return true;
         }
 

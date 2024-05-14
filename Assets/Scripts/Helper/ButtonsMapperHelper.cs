@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Database.Settings;
 using KBCore.Refs;
 using Meta.XR.BuildingBlocks;
@@ -39,19 +38,10 @@ namespace Helper
                     break;
             }
         }
-
-        private void HandleAnchor()
-        {
-            var prefab = spatialAnchorSpawnerBuildingBlock.AnchorPrefab;
-            if (prefab == null) return;
-            
-            Destroy(prefab);
-        }
         
         private void ChangeVisibilityBasedOnActualVisibility(List<GameObject> mapperParent)
         {
             SetAllHelpersInactive();
-            HandleAnchor();
             
             if (_isMapperVisible)
             {

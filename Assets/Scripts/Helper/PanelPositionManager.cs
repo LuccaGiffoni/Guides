@@ -1,8 +1,5 @@
-using System;
 using KBCore.Refs;
-using Oculus.Interaction.Input;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Helper
 {
@@ -16,7 +13,8 @@ namespace Helper
 
         public void LateUpdate()
         {
-            if (centerEyeAnchor.transform.position.y >= 0.5 && !finalPosition)
+            if (centerEyeAnchor.transform.position.z - transform.position.z <= 0.7f && 
+                centerEyeAnchor.transform.position.y - transform.position.y <= 0.05f && !finalPosition)
             {
                 SetPanelPosition();
             }
@@ -25,7 +23,7 @@ namespace Helper
         private void SetPanelPosition()
         {
             transform.position = new Vector3(centerEyeAnchor.transform.localPosition.x,
-                centerEyeAnchor.transform.localPosition.y - 0.15f, centerEyeAnchor.transform.localPosition.z + 0.4f);
+                centerEyeAnchor.transform.localPosition.y, centerEyeAnchor.transform.localPosition.z + 0.65f);
             finalPosition = true;
         }
     }
