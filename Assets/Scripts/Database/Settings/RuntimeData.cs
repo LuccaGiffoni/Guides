@@ -16,6 +16,7 @@ namespace Database.Settings
         public static OVRSpatialAnchor activeAnchor { get; set; }
         public static List<GameObject> stepButtons { get; set; } = new();
         public static List<InteractionManager> interactionManagers { get; set; } = new();
+        public static List<Dictionary<GameObject, bool>> createdCubes { get; set; } = new();
         public static GameObject activePickPosition { get; set; } = new();
         public static OperationManagerState currentCreativeMode { get; set; } = OperationManagerState.None;
         

@@ -3551,6 +3551,26 @@ PrefabInstance:
       propertyPath: m_BackGroundColor.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1605516632206019956, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
+      propertyPath: disableEyeAnchorCameras
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1605516632206019956, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
+      propertyPath: useFixedUpdateForTracking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5435905031209720329, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
+      propertyPath: LateControllerUpdate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6418931572205013604, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6964397560045753186, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7724939724222408663, guid: f0062ab68efd2fe49b89c428eb937ddf, type: 3}
       propertyPath: m_Name
       value: CompleteCameraRig

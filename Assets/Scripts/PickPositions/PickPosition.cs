@@ -15,13 +15,5 @@ namespace PickPositions
         public Quaternion rotation;
         
         public int runtimeIndex;
-
-        public void SetNewParametersForPickPosition(int index)
-        {
-            position = localTransform.position - RuntimeData.activeAnchor.transform.position;
-            rotation = localTransform.localRotation;
-            scale = localTransform.localScale;
-            runtimeIndex = index;
-        }
     }
 }

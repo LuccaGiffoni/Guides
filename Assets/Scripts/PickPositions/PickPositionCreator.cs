@@ -4,6 +4,8 @@ using Database.Settings;
 using Helper;
 using KBCore.Refs;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.XR;
 
 namespace PickPositions
@@ -33,6 +35,8 @@ namespace PickPositions
         private const InputDeviceCharacteristics DesiredLeftCharacteristics = InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
         private const InputDeviceCharacteristics DesiredRightCharacteristics = InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
 
+        public UnityEvent<GameObject> onPickPositionCreated;
+        
         private void Start() => GetControllers();
 
         private void GetControllers()
@@ -119,9 +123,14 @@ namespace PickPositions
         public async void SavePickPositionToDatabase()
         {
             var result = await Post.SavePickPositionToDatabase(RuntimeData.selectedStep.StepID, activeCube.transform);
-            activeCube = null;
 
-            if(result) popupManager.SendMessageToUser("PickPosition registrada no banco de dados com sucesso!", PopupType.Info);
+            if (result)
+            {
+                popupManager.SendMessageToUser($"Salvando como: {activeCube.transform.position}, {activeCube.transform.localPosition}, " +
+                                               $"{activeCube.transform.rotation}, {activeCube.transform.localScale}", PopupType.Info);
+                
+                activeCube = null;
+            }
             else popupManager.SendMessageToUser("Houve um problema ao salvar a PickPosition. Tente novamente!", PopupType.Error);
         }
     }

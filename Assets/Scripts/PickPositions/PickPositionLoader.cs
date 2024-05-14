@@ -16,12 +16,12 @@ namespace PickPositions
             if (RuntimeData.selectedStep.SX <= 0 && RuntimeData.selectedStep.SY <= 0 &&
                 RuntimeData.selectedStep.SZ <= 0) return null;
 
-            var position = new Vector3(RuntimeData.selectedStep.PX + RuntimeData.activeAnchor.transform.position.x, 
-                RuntimeData.selectedStep.PY + RuntimeData.activeAnchor.transform.position.y, RuntimeData.selectedStep.PZ + RuntimeData.activeAnchor.transform.position.z);
+            var position = new Vector3(RuntimeData.selectedStep.PX, RuntimeData.selectedStep.PY , RuntimeData.selectedStep.PZ);
             var rotation = Quaternion.Euler(RuntimeData.selectedStep.RX, RuntimeData.selectedStep.RY, RuntimeData.selectedStep.RZ);
             var scale = new Vector3(RuntimeData.selectedStep.SX, RuntimeData.selectedStep.SY, RuntimeData.selectedStep.SZ);
             
-            var pickPositionInstance = Instantiate(managerPickPosition, position, rotation,RuntimeData.activeAnchor.transform);
+            var pickPositionInstance = Instantiate(operatorPickPosition, RuntimeData.activeAnchor.transform);
+            pickPositionInstance.transform.SetLocalPositionAndRotation(position, rotation);
             pickPositionInstance.transform.localScale = scale;
 
             localLoadedPickPosition = pickPositionInstance;
@@ -39,7 +39,8 @@ namespace PickPositions
                 var rotation = Quaternion.Euler(step.RX, step.RY, step.RZ);
                 var scale = new Vector3(step.SX, step.SY, step.SZ);
             
-                var pickPositionInstance = Instantiate(operatorPickPosition, position, rotation, RuntimeData.activeAnchor.transform);
+                var pickPositionInstance = Instantiate(operatorPickPosition, RuntimeData.activeAnchor.transform);
+                pickPositionInstance.transform.SetLocalPositionAndRotation(position, rotation);
                 pickPositionInstance.transform.localScale = scale;
                 pickPositionInstance.GetComponent<PickPosition>().runtimeIndex = step.StepIndex - 1;
                 
