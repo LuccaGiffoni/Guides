@@ -38,10 +38,10 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.74
+    - _Alpha: 0.9
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _Power: 1
+    - _Power: 1.25
     m_Colors:
     - _Color: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0}
   m_BuildTextureStacks: []

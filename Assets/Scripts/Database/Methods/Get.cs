@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Database.Entities;
 using Database.Settings;
 using Helper;
@@ -42,7 +41,7 @@ namespace Database.Methods
         }
         
         [Tooltip("Get all steps for a specific operation.")]
-        public static async Task<StepList> GetStepsForOperationAsync(Guid operationId, PopupManager popupManager)
+        public static async Task<StepList> GetStepsForOperationAsync(int operationId, PopupManager popupManager)
         {
             var stepsUrl = ConnectionSettings.apiUrl + "?action=get_steps&operationId=" + operationId;
 

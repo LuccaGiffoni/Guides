@@ -118,12 +118,7 @@ namespace PickPositions
 
         public async void SavePickPositionToDatabase()
         {
-            //var relativePosition = activeCube.transform.position - RuntimeData.activeAnchor.transform.position;
-            //var result = await Post.SavePickPositionToDatabase(RuntimeData.selectedStep.StepID, relativePosition, activeCube.transform);
-
             var result = await Post.SavePickPositionToDatabase(RuntimeData.selectedStep.StepID, activeCube.transform);
-            
-            Destroy(activeCube.gameObject);
             activeCube = null;
 
             if(result) popupManager.SendMessageToUser("PickPosition registrada no banco de dados com sucesso!", PopupType.Info);

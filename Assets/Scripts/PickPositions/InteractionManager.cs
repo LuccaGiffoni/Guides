@@ -34,19 +34,14 @@ namespace PickPositions
             ConfigureColor();
         }
 
-        private void ConfigureColor()
+        public void ConfigureColor()
         {
             rend.material = RuntimeData.selectedStepToOperate.StepIndex == pickPosition.runtimeIndex + 1 ? materials[3] : materials[0];
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.gameObject.CompareTag(HandTag))
-            {
-                popupManager.SendMessageToUser($"Colidiu com {other.gameObject.tag}", PopupType.Warning);
-            }
-            
-            popupManager.SendMessageToUser($"Colidiu com {other.gameObject.tag}", PopupType.Info);
+            if (!other.gameObject.CompareTag(HandTag)) return;
 
             if (RuntimeData.selectedStepToOperate.StepIndex == pickPosition.runtimeIndex + 1)
             {
@@ -56,9 +51,7 @@ namespace PickPositions
                 audioSource.Play();
 
                 if (!isAlreadyTriggered)
-                {
                     operationOperatorBehaviour.UnlockNextButton();
-                }
 
                 isAlreadyTriggered = true;
             }

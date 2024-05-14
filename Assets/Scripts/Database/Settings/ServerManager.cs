@@ -15,13 +15,14 @@ namespace Database.Settings
 
         private void Start()
         {
-            serverAddress.text = "Servidor atual: " + ConnectionSettings.LocalServerAddress;
+            serverAddress.text = "Servidor atual: " + PlayerPrefs.GetString(ConnectionSettings.ServerPrefs);
         }
 
         public void UpdateServerAddress()
         {
             ConnectionSettings.SetNewServerAddress(inputField.text);
-            serverAddress.text = "Servidor atual: " + ConnectionSettings.LocalServerAddress;
+            
+            serverAddress.text = "Servidor atual: " + PlayerPrefs.GetString(ConnectionSettings.ServerPrefs);
             sceneTransitionManager.LoadSceneByIndex(0);
         }
     }

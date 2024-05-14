@@ -10,7 +10,7 @@ namespace Database.Methods
     public static class Post
     {
         [Tooltip("Update the Operation's Spatial Anchor UUID in the database.")]
-        public static async Task<bool> UpdateOperationAnchorUuidAsync(Guid operationId, Guid anchorUuid)
+        public static async Task<bool> UpdateOperationAnchorUuidAsync(int operationId, Guid anchorUuid)
         {
             WWWForm form = new();
             form.AddField("operationId", operationId.ToString());
@@ -33,7 +33,7 @@ namespace Database.Methods
         }
         
         [Tooltip("Clear the Spatial Anchor's UUID in the database.")]
-        public static async Task<bool> ClearOperationAnchorUuidAsync(Guid operationId)
+        public static async Task<bool> ClearOperationAnchorUuidAsync(int operationId)
         {
             WWWForm form = new();
             form.AddField("operationId", operationId.ToString());
@@ -50,13 +50,11 @@ namespace Database.Methods
                 return false;
             }
 
-            Debug.Log(DatabaseLogMessages.serverConnectionSucceeded);
-            Debug.Log(uwr.downloadHandler.text);
             return true;
         }
 
         [Tooltip("Save PickPosition by step on database.")]
-        public static async Task<bool> SavePickPositionToDatabase(Guid stepId, Transform pickPosition)
+        public static async Task<bool> SavePickPositionToDatabase(int stepId, Transform pickPosition)
         {
             WWWForm form = new();
             form.AddField("stepId", stepId.ToString());

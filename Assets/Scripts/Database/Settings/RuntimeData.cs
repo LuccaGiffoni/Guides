@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Database.Entities;
+using PickPositions;
 using SceneBehaviours.OperationManager;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Database.Settings
         public static StepList steps { get; private set; } = new();
         public static OVRSpatialAnchor activeAnchor { get; set; }
         public static List<GameObject> stepButtons { get; set; } = new();
+        public static List<InteractionManager> interactionManagers { get; set; } = new();
         public static GameObject activePickPosition { get; set; } = new();
         public static OperationManagerState currentCreativeMode { get; set; } = OperationManagerState.None;
         

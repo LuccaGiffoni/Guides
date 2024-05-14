@@ -25,7 +25,6 @@ namespace Helper
 
         public void HandleMappersVisibility()
         {
-
             switch (RuntimeData.currentCreativeMode)
             {
                 case OperationManagerState.None:
@@ -39,24 +38,10 @@ namespace Helper
                     break;
             }
         }
-
-        private void HandleAnchor()
-        {
-            var prefab = spatialAnchorSpawnerBuildingBlock.AnchorPrefab;
-            if (prefab == null) return;
-            
-            for (var i = 0; i < prefab.transform.childCount; i++)
-            {
-                var childTransform = prefab.transform.GetChild(i);
-                
-                if(childTransform.gameObject.activeInHierarchy) childTransform.gameObject.SetActive(false);
-                else childTransform.gameObject.SetActive(true);
-            }
-        }
+        
         private void ChangeVisibilityBasedOnActualVisibility(List<GameObject> mapperParent)
         {
             SetAllHelpersInactive();
-            HandleAnchor();
             
             if (_isMapperVisible)
             {

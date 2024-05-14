@@ -52,8 +52,7 @@ namespace SceneBehaviours.OperationOperator
                 var button = Instantiate(buttonPrefab, buttonParent);
                 var stepButton = button.GetComponentInChildren<OperatorStepButton>();
 
-                if (step.StepIndex == 1) button.GetComponent<Button>().interactable = true;
-                else button.GetComponent<Button>().interactable = false;
+                button.GetComponent<Button>().interactable = step.StepIndex == 1;
                 
                 stepButton.stepIndex = step.StepIndex;
                 stepButton.stepNumberText.text = step.StepIndex.ToString();
@@ -74,7 +73,11 @@ namespace SceneBehaviours.OperationOperator
         public async void UnlockNextButton()
         {
             await Task.Delay((int)RuntimeData.selectedStepToOperate.AssemblyTime * 1000);
-            RuntimeData.stepButtons[RuntimeData.selectedStepToOperate.StepIndex - 1].GetComponent<Button>().interactable = true;
+
+            RuntimeData.stepButtons[RuntimeData.selectedStepToOperate.StepIndex].TryGetComponent<Button>(out var stepButton);
+            stepButton.interactable = true;
+            
+            MoveToStep(RuntimeData.selectedStepToOperate.StepIndex);
         }
         
         public void SaveAndExit()
@@ -82,13 +85,24 @@ namespace SceneBehaviours.OperationOperator
             RuntimeData.selectedStepToOperate = null;
             RuntimeData.selectedOperationToOperate = null;
             RuntimeData.stepButtons.Clear();
+            RuntimeData.interactionManagers.Clear();
             
             sceneTransitionManager.LoadSceneByIndex(0);
         }
         
         public void MoveToStep(int index)
         {
+            Debug.Log("Moving to step: " + (index - 1).ToString());
             RuntimeData.selectedStepToOperate = RuntimeData.steps.Steps[index - 1];
+
+            Debug.Log(RuntimeData.interactionManagers.Count);
+
+            if (RuntimeData.interactionManagers.Count > 0)
+            {
+                foreach (var interactionManager in RuntimeData.interactionManagers)
+                    interactionManager.ConfigureColor();  
+            }
+            
             UpdatePanelInformation();
         }
     }

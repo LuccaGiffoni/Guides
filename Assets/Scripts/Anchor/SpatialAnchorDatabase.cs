@@ -25,7 +25,8 @@ namespace Anchor
                 if (!task) return;
 
                 popupManager.SendMessageToUser(AnchorLogMessages.anchorSavedToDatabase, PopupType.Info);
-                RuntimeData.activeAnchor.GetComponent<SpatialAnchor>().SetSpatialAnchorData(AnchorLogMessages.anchorSavedToDatabase, RuntimeData.activeAnchor.Uuid.ToString());
+                RuntimeData.activeAnchor.GetComponent<SpatialAnchor>().SetSpatialAnchorData(AnchorLogMessages.anchorSavedToDatabase,
+                    RuntimeData.activeAnchor.Uuid.ToString());
             }
             catch (Exception e) { popupManager.SendMessageToUser(AnchorLogMessages.LogErrorWhileSavingAnchor(e.Message), PopupType.Error); }
         }
@@ -35,7 +36,12 @@ namespace Anchor
             try
             {
                 var result = await Post.ClearOperationAnchorUuidAsync(RuntimeData.selectedOperation.OperationID);
-                if (result) popupManager.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabase, PopupType.Info);
+
+                if (result)
+                {
+                    popupManager.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabase, PopupType.Info);
+                    RuntimeData.activeAnchor = null;
+                }
             }
             catch (Exception e) { popupManager.SendMessageToUser(AnchorLogMessages.LogErrorWhileClearingAnchor(e.Message), PopupType.Error); }
         }
