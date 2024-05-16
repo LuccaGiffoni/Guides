@@ -1,13 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Database.Methods;
 using Database.Settings;
 using Helper;
 using KBCore.Refs;
+using Language;
 using PickPositions;
 using Scene;
 using SceneBehaviours.StepButtons;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace SceneBehaviours.OperationManager
 {
@@ -15,8 +19,7 @@ namespace SceneBehaviours.OperationManager
     {
         [Header("References")]
         [SerializeField, Scene] private PopupManager popupManager;
-        [SerializeField] private PickPositionCreator pickPositionCreator;
-        [SerializeField] private PickPositionLoader pickPositionLoader;
+        [SerializeField] private ManagerPickPositionLoader managerPickPositionLoader;
         [SerializeField] private SceneTransitionManager sceneTransitionManager;
 
         [Header("Button Settings")]
@@ -27,33 +30,34 @@ namespace SceneBehaviours.OperationManager
         [SerializeField] private TextMeshProUGUI descriptionText;
         [SerializeField] private TextMeshProUGUI operationNameText; 
         [SerializeField] private TextMeshProUGUI stepNumberText;
-    
+
+        [HideInInspector] public UnityEvent onStepsReceived = new();
+        
         private async void Start() => await GetStepsForOperation();
         
         private async Task GetStepsForOperation()
         {
-            var receivedSteps = await Get.GetStepsForOperationAsync(RuntimeData.selectedOperation.OperationID, popupManager);
-
-            if(receivedSteps == null || receivedSteps.Steps.Count == 0) return;
+            var localReceivedSteps = await Get.GetStepsForOperationAsync(ManagerRuntimeData.selectedOperation.OperationID, popupManager);
             
-            RuntimeData.SaveReceivedSteps(receivedSteps.Steps);
-            RuntimeData.selectedStep = RuntimeData.steps.Steps[0];
-            
-            CreateButtons();
-            ConfigureUserInterface();
+            if (localReceivedSteps.Steps.Count > 0)
+            {
+                popupManager.SendMessageToUser(DatabaseLogMessages.ReturnedSteps(localReceivedSteps.Steps.Count), PopupType.Info);
+                ManagerRuntimeData.SaveSteps(localReceivedSteps.Steps);
+                
+                onStepsReceived.Invoke();
+                CreateButtons();
+            }
+            else
+            {
+                popupManager.SendMessageToUser(DatabaseLogMessages.NoneStepFoundOnDatabase, PopupType.Warning);
+            }
         }
 
-        public void ConfigureUserInterface()
-        {
-            CreatePickPositionForStep();
-            UpdatePanelInformation();
-        }
-        
         private void CreateButtons()
         {
-            RuntimeData.stepButtons.Clear();
+            ManagerRuntimeData.stepButtons.Clear();
 
-            foreach (var step in RuntimeData.steps.Steps)
+            foreach (var step in ManagerRuntimeData.steps.Steps)
             {
                 var button = Instantiate(buttonPrefab, buttonParent);
                 var stepButton = button.GetComponentInChildren<StepButton>();
@@ -61,45 +65,33 @@ namespace SceneBehaviours.OperationManager
                 stepButton.stepIndex = step.StepIndex;
                 stepButton.stepNumberText.text = step.StepIndex.ToString();
 
-                RuntimeData.stepButtons.Add(button);
+                ManagerRuntimeData.stepButtons.Add(button);
             }
+            
+            UpdatePanelInformation();
         }
         
-        public void CreatePickPositionForStep()
+        public void UpdatePanelInformation()
         {
-            if (RuntimeData.activeAnchor == null) return;
-            if (RuntimeData.selectedStep.PX == 0 && RuntimeData.selectedStep.PY == 0 && RuntimeData.selectedStep.PZ == 0 &&
-                RuntimeData.selectedStep.RX == 0 && RuntimeData.selectedStep.RY == 0 && RuntimeData.selectedStep.RZ == 0 && RuntimeData.selectedStep.RW == 0) return;
-
-            var pickPosition = pickPositionLoader.CreatePickPositionInstance();
-            RuntimeData.activePickPosition = pickPosition;
-        }
-        
-        private void UpdatePanelInformation()
-        {
-            descriptionText.text = RuntimeData.selectedStep.Description;
-            operationNameText.text = RuntimeData.selectedOperation.Description;
-            stepNumberText.text = $"Passo {RuntimeData.selectedStep.StepIndex.ToString()} de {RuntimeData.steps.Steps.Count}";
+            descriptionText.text = ManagerRuntimeData.selectedStep.Description;
+            operationNameText.text = ManagerRuntimeData.selectedOperation.Description;
+            stepNumberText.text = $"Passo {ManagerRuntimeData.selectedStep.StepIndex.ToString()} de {ManagerRuntimeData.steps.Steps.Count}";
         }
 
         public void MoveToStep(int index)
         {
-            RuntimeData.selectedStep = RuntimeData.steps.Steps[index - 1];
-            
-            pickPositionLoader.localLoadedPickPosition = null;
-            Destroy(pickPositionLoader.localLoadedPickPosition);
-            RuntimeData.activePickPosition = null;
+            ManagerRuntimeData.selectedStep = ManagerRuntimeData.steps.Steps[index - 1];
+            ManagerRuntimeData.ReturnActivePickPosition();
             
             UpdatePanelInformation();
-            CreatePickPositionForStep();
         }
 
         public void SaveAndExit()
         {
-            RuntimeData.selectedStep = null;
-            RuntimeData.selectedOperation = null;
-            RuntimeData.stepButtons.Clear();
-            RuntimeData.steps.Steps.Clear();
+            ManagerRuntimeData.selectedStep = null;
+            ManagerRuntimeData.selectedOperation = null;
+            ManagerRuntimeData.stepButtons.Clear();
+            ManagerRuntimeData.steps.Steps.Clear();
             
             sceneTransitionManager.LoadSceneByIndex(0);
         }

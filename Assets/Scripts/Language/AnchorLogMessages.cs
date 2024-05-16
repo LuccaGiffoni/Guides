@@ -11,6 +11,7 @@
         public static string anchorClearedFromDatabase => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora removida do banco de dados!" : "Anchor removed from database!";
         public static string anchorClearedFromDatabaseAndMemory => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora removida do banco de dados e da memória!" : "Anchor removed from database!";
         public static string anchorNotFoundOnDatabase => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora não encontrada no banco de dados!" : "Anchor not found on database!";
+        public static string tryingToFindAnchor => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Buscando âncora no banco de dados e na memória!" : "Searching anchor on database and memory!";
 
         public static string createdAnchorNotSavedYet => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora criada, mas não salva no banco de dados!" : "Anchor created, but not saved to database!";
         public static string LogErrorWhileSavingAnchor(string error)

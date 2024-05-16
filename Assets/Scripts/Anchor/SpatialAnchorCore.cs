@@ -31,9 +31,9 @@ namespace Anchor
 
         public void ToggleAnchorVisibility()
         {
-            if (RuntimeData.activeAnchor != null)
+            if (ManagerRuntimeData.activeAnchor != null)
             {
-                RuntimeData.activeAnchor.gameObject.SetActive(!RuntimeData.activeAnchor.gameObject.activeInHierarchy);
+                ManagerRuntimeData.activeAnchor.gameObject.SetActive(!ManagerRuntimeData.activeAnchor.gameObject.activeInHierarchy);
             }
         }
         
@@ -41,7 +41,7 @@ namespace Anchor
         {
             if (result != OVRSpatialAnchor.OperationResult.Success) return;
             
-            if (RuntimeData.selectedOperation.AnchorUuid != Guid.Empty)
+            if (ManagerRuntimeData.selectedOperation.AnchorUuid != Guid.Empty)
             {
                 popupManager.SendMessageToUser(AnchorLogMessages.savedAnchorIsNotLoaded, PopupType.Warning);
                 return;
@@ -55,9 +55,9 @@ namespace Anchor
 
         private void ConfigureUnsavedAnchorOnScene(OVRSpatialAnchor anchor)
         {
-            RuntimeData.activeAnchor = anchor;
-            var spatialAnchor = RuntimeData.activeAnchor.GetComponent<SpatialAnchor>();
-            spatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorNotSavedYet, RuntimeData.activeAnchor.Uuid.ToString());
+            ManagerRuntimeData.activeAnchor = anchor;
+            var spatialAnchor = ManagerRuntimeData.activeAnchor.GetComponent<SpatialAnchor>();
+            spatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorNotSavedYet, ManagerRuntimeData.activeAnchor.Uuid.ToString());
             
             _anchors.Add(anchor);
         }
@@ -71,16 +71,18 @@ namespace Anchor
 
         public async void DeleteSavedAnchorFromMemoryAndDatabase()
         {
-            if (RuntimeData.activeAnchor != null)
+            if (ManagerRuntimeData.activeAnchor != null)
             {
                 await anchorDatabase.ClearSpatialAnchorFromDatabase();
-                anchorCore.EraseAnchorByUuid(RuntimeData.activeAnchor.Uuid);
+                anchorCore.EraseAnchorByUuid(ManagerRuntimeData.activeAnchor.Uuid);
+                ManagerRuntimeData.activeAnchor = null;
                 
                 popupManager.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabaseAndMemory, PopupType.Info);
             }
             else
             {
                 await anchorDatabase.ClearSpatialAnchorFromDatabase();
+                ManagerRuntimeData.activeAnchor = null;
                 
                 popupManager.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabase, PopupType.Info);
             }
@@ -88,26 +90,26 @@ namespace Anchor
 
         private void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> anchors)
         {
-            RuntimeData.activeAnchor = anchors[0];
+            ManagerRuntimeData.activeAnchor = anchors[0];
             
-            if(RuntimeData.activeAnchor == null) return;
-            var spatialAnchor = RuntimeData.activeAnchor.GetComponent<SpatialAnchor>();
+            if(ManagerRuntimeData.activeAnchor == null) return;
+            var spatialAnchor = ManagerRuntimeData.activeAnchor.GetComponent<SpatialAnchor>();
 
-            if (RuntimeData.selectedOperation != null)
-                operationManagerBehaviour.CreatePickPositionForStep();
+            if (ManagerRuntimeData.selectedOperation != null)
+                operationManagerBehaviour.UpdatePanelInformation();
             
-            spatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorLocalized, RuntimeData.activeAnchor.Uuid.ToString());
+            spatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorLocalized, ManagerRuntimeData.activeAnchor.Uuid.ToString());
         }
         
         public void LoadSavedSpatialAnchorToScene()
         {
-            if(RuntimeData.selectedOperation.AnchorUuid == Guid.Empty)
+            if(ManagerRuntimeData.selectedOperation.AnchorUuid == Guid.Empty)
             {
                 popupManager.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, PopupType.Warning);
                 return;
             }
             
-            var guids = new List<Guid> { RuntimeData.selectedOperation.AnchorUuid };
+            var guids = new List<Guid> { ManagerRuntimeData.selectedOperation.AnchorUuid };
             anchorCore.LoadAndInstantiateAnchors(anchorPrefab, guids);
         }
     }

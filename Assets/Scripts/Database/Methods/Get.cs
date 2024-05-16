@@ -56,10 +56,8 @@ namespace Database.Methods
             
             var jsonResponse = uwr.downloadHandler.text;
             var localReceivedSteps = JsonConvert.DeserializeObject<StepList>("{\"steps\":" + jsonResponse + "}");
-            
-            popupManager.SendMessageToUser(DatabaseLogMessages.ReturnedSteps(localReceivedSteps.Steps.Count), PopupType.Info);
 
-            return localReceivedSteps;
+            return localReceivedSteps.Steps.Count > 0 ? localReceivedSteps : null;
         }
         
         private static Task SendWebRequestAsync(UnityWebRequest uwr)

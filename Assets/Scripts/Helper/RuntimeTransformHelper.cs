@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace PickPositions
+namespace Helper
 {
     public class RuntimeTransformHelper : MonoBehaviour
     {

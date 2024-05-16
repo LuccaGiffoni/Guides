@@ -956,14 +956,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupManager: {fileID: 213387031}
-  pickPositionLoader: {fileID: 1854538225}
+  operatorPickPositionLoader: {fileID: 1854538225}
   sceneTransitionManager: {fileID: 95192669}
-  spatialAnchorCore: {fileID: 999170626}
   buttonPrefab: {fileID: 8908573723230703428, guid: 064e6ccafd3ed1b4498131df70ed01d5, type: 3}
   buttonParent: {fileID: 5133693716013814388}
   descriptionText: {fileID: 279737145}
   operationNameText: {fileID: 2033174366}
   stepNumberText: {fileID: 5133693716501781440}
+  onStepsReceived:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &864767010
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,9 +1268,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anchorCore: {fileID: 999170621}
-  anchorDatabase: {fileID: 999170625}
-  operationOperatorBehaviour: {fileID: 833791095}
   popupManager: {fileID: 213387031}
+  operationOperatorBehaviour: {fileID: 833791095}
   anchorPrefab: {fileID: 789684486510353890, guid: fc5d6678f70f1d74a80851d642528940, type: 3}
 --- !u!1 &1333538052
 GameObject:
@@ -1811,9 +1812,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f45ae8239041edb6624a29c8bad371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  operationOperatorBehaviour: {fileID: 833791095}
   managerPickPosition: {fileID: 5354188862167544933, guid: 8b0a33cfd65a32e4b87287a71fd9866b, type: 3}
   operatorPickPosition: {fileID: 2549305735535943147, guid: 4eb3d16eecee6694aa2dcaafad8510df, type: 3}
-  localLoadedPickPosition: {fileID: 0}
 --- !u!1001 &1963376587
 PrefabInstance:
   m_ObjectHideFlags: 0

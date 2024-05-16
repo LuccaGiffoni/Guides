@@ -18,8 +18,8 @@ namespace SceneBehaviours.StepButtons
 
         public void MoveToStep()
         {
-            RuntimeData.selectedStep = RuntimeData.steps.Steps[stepButton.stepIndex - 1];
-            operationManagerBehaviour.ConfigureUserInterface();
+            ManagerRuntimeData.selectedStep = ManagerRuntimeData.steps.Steps[stepButton.stepIndex - 1];
+            operationManagerBehaviour.UpdatePanelInformation();
         }
     }
 }

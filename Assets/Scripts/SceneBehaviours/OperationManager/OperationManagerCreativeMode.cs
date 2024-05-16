@@ -20,7 +20,7 @@ namespace SceneBehaviours.OperationManager
             foreach (var objects in anchorObjects) objects.SetActive(true);
             defaultControllerMapper.enabled = false;
             
-            RuntimeData.currentCreativeMode = OperationManagerState.Anchor;
+            ManagerRuntimeData.currentCreativeMode = OperationManagerState.Anchor;
             
             OnCreativeModeChange?.Invoke();
         }
@@ -31,7 +31,7 @@ namespace SceneBehaviours.OperationManager
             foreach (var objects in anchorObjects) objects.SetActive(false);
             defaultControllerMapper.enabled = false;
 
-            RuntimeData.currentCreativeMode = OperationManagerState.PickPosition;
+            ManagerRuntimeData.currentCreativeMode = OperationManagerState.PickPosition;
 
             OnCreativeModeChange?.Invoke();
         }
@@ -42,7 +42,7 @@ namespace SceneBehaviours.OperationManager
             foreach (var objects in anchorObjects) objects.SetActive(false);
             defaultControllerMapper.enabled = true;
             
-            RuntimeData.currentCreativeMode = OperationManagerState.None;
+            ManagerRuntimeData.currentCreativeMode = OperationManagerState.None;
 
             OnCreativeModeChange?.Invoke(); 
         }

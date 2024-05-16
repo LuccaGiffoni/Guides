@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Anchor;
 using Database.Methods;
 using Database.Settings;
@@ -9,6 +10,8 @@ using Scene;
 using SceneBehaviours.StepButtons;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace SceneBehaviours.OperationOperator
@@ -17,9 +20,8 @@ namespace SceneBehaviours.OperationOperator
     {
         [Header("References")]
         [SerializeField, Scene] private PopupManager popupManager;
-        [SerializeField] private PickPositionLoader pickPositionLoader;
+        [SerializeField] private OperatorPickPositionLoader operatorPickPositionLoader;
         [SerializeField] private SceneTransitionManager sceneTransitionManager;
-        [SerializeField] private OperatorSpatialAnchorCore spatialAnchorCore;
 
         [Header("Button Settings")]
         [SerializeField] private GameObject buttonPrefab;
@@ -30,24 +32,23 @@ namespace SceneBehaviours.OperationOperator
         [SerializeField] private TextMeshProUGUI operationNameText; 
         [SerializeField] private TextMeshProUGUI stepNumberText;
 
-        private void Start() => spatialAnchorCore.LoadSavedSpatialAnchorToOperatorScene();
-        
+        public UnityEvent onStepsReceived = new();
+
         public async Task GetStepsForOperation()
         {
-            var receivedSteps = await Get.GetStepsForOperationAsync(RuntimeData.selectedOperationToOperate.OperationID, popupManager);
+            var receivedSteps = await Get.GetStepsForOperationAsync(OperatorRuntimeData.selectedOperation.OperationID, popupManager);
 
             if(receivedSteps == null || receivedSteps.Steps.Count == 0) return;
+            onStepsReceived.Invoke();
             
-            RuntimeData.SaveReceivedStepsToOperate(receivedSteps.Steps);
-            RuntimeData.selectedStepToOperate = RuntimeData.steps.Steps[0];
+            OperatorRuntimeData.SaveSteps(receivedSteps.Steps);
             
             CreateButtons();
-            UpdatePanelInformation();
         }
 
         private void CreateButtons()
         {
-            foreach (var step in RuntimeData.steps.Steps)
+            foreach (var step in ManagerRuntimeData.steps.Steps)
             {
                 var button = Instantiate(buttonPrefab, buttonParent);
                 var stepButton = button.GetComponentInChildren<OperatorStepButton>();
@@ -57,52 +58,41 @@ namespace SceneBehaviours.OperationOperator
                 stepButton.stepIndex = step.StepIndex;
                 stepButton.stepNumberText.text = step.StepIndex.ToString();
                 
-                RuntimeData.stepButtons.Add(button);
+                OperatorRuntimeData.stepButtons.Add(button);
             }
-
-            pickPositionLoader.CreateAllPickPositionsInstances();
+            
+            UpdatePanelInformation();
         }
         
         public void UpdatePanelInformation()
         {
-            descriptionText.text = RuntimeData.selectedStepToOperate.Description;
-            operationNameText.text = RuntimeData.selectedOperationToOperate.Description;
-            stepNumberText.text = $"Passo {RuntimeData.selectedStepToOperate.StepIndex.ToString()} de {RuntimeData.steps.Steps.Count}";
+            descriptionText.text = OperatorRuntimeData.selectedStep.Description;
+            operationNameText.text = OperatorRuntimeData.selectedOperation.Description;
+            stepNumberText.text = $"Passo {OperatorRuntimeData.selectedStep.StepIndex.ToString()} de {ManagerRuntimeData.steps.Steps.Count}";
         }
         
         public async void UnlockNextButton()
         {
-            await Task.Delay((int)RuntimeData.selectedStepToOperate.AssemblyTime * 1000);
+            await Task.Delay((int)OperatorRuntimeData.selectedStep.AssemblyTime * 1000);
 
-            RuntimeData.stepButtons[RuntimeData.selectedStepToOperate.StepIndex].TryGetComponent<Button>(out var stepButton);
+            OperatorRuntimeData.stepButtons[OperatorRuntimeData.selectedStep.StepIndex].TryGetComponent<Button>(out var stepButton);
             stepButton.interactable = true;
             
-            MoveToStep(RuntimeData.selectedStepToOperate.StepIndex);
+            MoveToStep(OperatorRuntimeData.selectedStep.StepIndex);
         }
         
         public void SaveAndExit()
         {
-            RuntimeData.selectedStepToOperate = null;
-            RuntimeData.selectedOperationToOperate = null;
-            RuntimeData.stepButtons.Clear();
-            RuntimeData.interactionManagers.Clear();
+            OperatorRuntimeData.selectedStep = null;
+            OperatorRuntimeData.selectedOperation = null;
+            OperatorRuntimeData.stepButtons.Clear();
             
             sceneTransitionManager.LoadSceneByIndex(0);
         }
         
         public void MoveToStep(int index)
         {
-            Debug.Log("Moving to step: " + (index - 1).ToString());
-            RuntimeData.selectedStepToOperate = RuntimeData.steps.Steps[index - 1];
-
-            Debug.Log(RuntimeData.interactionManagers.Count);
-
-            if (RuntimeData.interactionManagers.Count > 0)
-            {
-                foreach (var interactionManager in RuntimeData.interactionManagers)
-                    interactionManager.ConfigureColor();  
-            }
-            
+            OperatorRuntimeData.selectedStep = OperatorRuntimeData.steps.Steps[index - 1];
             UpdatePanelInformation();
         }
     }

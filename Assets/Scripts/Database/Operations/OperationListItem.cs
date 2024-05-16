@@ -27,7 +27,7 @@ namespace Database.Operations
 
         public void SelectOperation()
         {
-            RuntimeData.SaveReceivedOperation(_operation);
+            ManagerRuntimeData.SaveOperation(_operation);
             _sceneTransitionManager.AutomaticallyLoadNextScene();
         }
     }

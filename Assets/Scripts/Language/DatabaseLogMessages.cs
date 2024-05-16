@@ -30,5 +30,8 @@
                 ? $"Foram encontrados {steps} Passos para a operação selecionada"
                 : $"Found {steps} Steps for the selected Operation";
         }
+        
+        public static string NoneStepFoundOnDatabase => Settings.UserPreferences.activeLanguage == Languages.Portuguese
+            ? "O servidor não retornou nenhum passo para a operação selecionada." : "The server did not return Step for the selected Operation.";
     }
 }

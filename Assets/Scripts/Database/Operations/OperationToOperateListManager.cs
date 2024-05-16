@@ -32,7 +32,7 @@ namespace Database.Operations
             foreach (var operation in operationsList)
             {
                 var operationInstance = Instantiate(operationPrefab, operationList);
-                operationInstance.GetComponent<OperationToOperateListItem>().SetOperation(operation, sceneTransitionManager);
+                operationInstance.GetComponent<OperatorOperationListItem>().SetOperation(operation, sceneTransitionManager);
             }
         }
     }

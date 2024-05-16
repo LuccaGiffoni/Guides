@@ -25,7 +25,7 @@ namespace Helper
 
         public void HandleMappersVisibility()
         {
-            switch (RuntimeData.currentCreativeMode)
+            switch (ManagerRuntimeData.currentCreativeMode)
             {
                 case OperationManagerState.None:
                     ChangeVisibilityBasedOnActualVisibility(defaultMapper);

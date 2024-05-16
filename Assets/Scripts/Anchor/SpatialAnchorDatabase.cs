@@ -19,14 +19,14 @@ namespace Anchor
         {
             try
             {
-                var task = await Post.UpdateOperationAnchorUuidAsync(RuntimeData.selectedOperation.OperationID,
-                    RuntimeData.activeAnchor.Uuid);
+                var task = await Post.UpdateOperationAnchorUuidAsync(ManagerRuntimeData.selectedOperation.OperationID,
+                    ManagerRuntimeData.activeAnchor.Uuid);
                 
                 if (!task) return;
 
                 popupManager.SendMessageToUser(AnchorLogMessages.anchorSavedToDatabase, PopupType.Info);
-                RuntimeData.activeAnchor.GetComponent<SpatialAnchor>().SetSpatialAnchorData(AnchorLogMessages.anchorSavedToDatabase,
-                    RuntimeData.activeAnchor.Uuid.ToString());
+                ManagerRuntimeData.activeAnchor.GetComponent<SpatialAnchor>().SetSpatialAnchorData(AnchorLogMessages.anchorSavedToDatabase,
+                    ManagerRuntimeData.activeAnchor.Uuid.ToString());
             }
             catch (Exception e) { popupManager.SendMessageToUser(AnchorLogMessages.LogErrorWhileSavingAnchor(e.Message), PopupType.Error); }
         }
@@ -35,12 +35,12 @@ namespace Anchor
         {
             try
             {
-                var result = await Post.ClearOperationAnchorUuidAsync(RuntimeData.selectedOperation.OperationID);
+                var result = await Post.ClearOperationAnchorUuidAsync(ManagerRuntimeData.selectedOperation.OperationID);
 
                 if (result)
                 {
                     popupManager.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabase, PopupType.Info);
-                    RuntimeData.activeAnchor = null;
+                    ManagerRuntimeData.activeAnchor = null;
                 }
             }
             catch (Exception e) { popupManager.SendMessageToUser(AnchorLogMessages.LogErrorWhileClearingAnchor(e.Message), PopupType.Error); }

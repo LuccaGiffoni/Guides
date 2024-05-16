@@ -53,29 +53,35 @@ namespace Database.Methods
             return true;
         }
 
-        [Tooltip("Save PickPosition by step on database.")]
-        public static async Task<bool> SavePickPositionToDatabase(int stepId, Transform pickPosition)
+        [Tooltip("Save OperatorPickPosition by step on database.")]
+        public static async Task<string> SavePickPositionToDatabase(int stepId, Transform pickPosition)
         {
-            WWWForm form = new();
-            form.AddField("stepId", stepId.ToString());
-            form.AddField("PX", pickPosition.transform.localPosition.x.ToString("n4").Replace(",", "."));
-            form.AddField("PY", pickPosition.transform.localPosition.y.ToString("n4").Replace(",", "."));
-            form.AddField("PZ", pickPosition.transform.localPosition.z.ToString("n4").Replace(",", "."));
-            form.AddField("RX", pickPosition.localRotation.x.ToString("n4").Replace(",", "."));
-            form.AddField("RY", pickPosition.localRotation.y.ToString("n4").Replace(",", "."));
-            form.AddField("RZ", pickPosition.localRotation.z.ToString("n4").Replace(",", "."));
-            form.AddField("RW", pickPosition.localRotation.w.ToString("n4").Replace(",", "."));
-            form.AddField("SX", pickPosition.localScale.x.ToString("n4").Replace(",", "."));
-            form.AddField("SY", pickPosition.localScale.y.ToString("n4").Replace(",", "."));
-            form.AddField("SZ", pickPosition.localScale.z.ToString("n4").Replace(",", "."));
-            
-            var updatePickPositionString = ConnectionSettings.apiUrl + "?action=update_step";
-            using var uwr = UnityWebRequest.Post(updatePickPositionString, form);
-            uwr.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            
-            await SendWebRequestAsync(uwr);
+            try
+            {
+                WWWForm form = new();
+                form.AddField("stepId", stepId.ToString());
+                form.AddField("PX", pickPosition.transform.localPosition.x.ToString("n4").Replace(",", "."));
+                form.AddField("PY", pickPosition.transform.localPosition.y.ToString("n4").Replace(",", "."));
+                form.AddField("PZ", pickPosition.transform.localPosition.z.ToString("n4").Replace(",", "."));
+                form.AddField("RX", pickPosition.localRotation.x.ToString("n4").Replace(",", "."));
+                form.AddField("RY", pickPosition.localRotation.y.ToString("n4").Replace(",", "."));
+                form.AddField("RZ", pickPosition.localRotation.z.ToString("n4").Replace(",", "."));
+                form.AddField("RW", pickPosition.localRotation.w.ToString("n4").Replace(",", "."));
+                form.AddField("SX", pickPosition.localScale.x.ToString("n4").Replace(",", "."));
+                form.AddField("SY", pickPosition.localScale.y.ToString("n4").Replace(",", "."));
+                form.AddField("SZ", pickPosition.localScale.z.ToString("n4").Replace(",", "."));
 
-            return uwr.result is not (UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError);
+                var updatePickPositionString = ConnectionSettings.apiUrl + "?action=update_step";
+                using var uwr = UnityWebRequest.Post(updatePickPositionString, form);
+                uwr.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                await SendWebRequestAsync(uwr);
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
         }
         
         private static Task SendWebRequestAsync(UnityWebRequest uwr)
