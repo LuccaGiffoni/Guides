@@ -18,7 +18,7 @@ namespace PickPositions
 
         [HideInInspector] public UnityEvent<GameObject> onPickPositionCreated;
 
-        private void Start() => validControllers = GetControllers(); 
+        private void Start() => validControllers = GetControllers();
 
         public bool GetControllers()
         {

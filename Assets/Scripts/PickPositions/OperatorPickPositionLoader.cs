@@ -12,7 +12,7 @@ namespace PickPositions
     {
         [Header("References")]
         [SerializeField, Scene] private OperationOperatorBehaviour operationOperatorBehaviour;
-        [SerializeField, Scene] private PopupManager popupManager;
+        [SerializeField] private PopupManager popupManager;
         
         [Header("Pick Positions")]
         [SerializeField] private GameObject pickPositionPrefab;

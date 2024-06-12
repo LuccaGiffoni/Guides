@@ -19,7 +19,7 @@ namespace SceneBehaviours.OperationOperator
     public class OperationOperatorBehaviour : ValidatedMonoBehaviour
     {
         [Header("References")]
-        [SerializeField, Scene] private PopupManager popupManager;
+        [SerializeField] private PopupManager popupManager;
         [SerializeField] private OperatorPickPositionLoader operatorPickPositionLoader;
         [SerializeField] private SceneTransitionManager sceneTransitionManager;
 
@@ -39,16 +39,16 @@ namespace SceneBehaviours.OperationOperator
             var receivedSteps = await Get.GetStepsForOperationAsync(OperatorRuntimeData.selectedOperation.OperationID, popupManager);
 
             if(receivedSteps == null || receivedSteps.Steps.Count == 0) return;
-            onStepsReceived.Invoke();
             
             OperatorRuntimeData.SaveSteps(receivedSteps.Steps);
+            onStepsReceived.Invoke();
             
             CreateButtons();
         }
 
         private void CreateButtons()
         {
-            foreach (var step in ManagerRuntimeData.steps.Steps)
+            foreach (var step in OperatorRuntimeData.steps.Steps)
             {
                 var button = Instantiate(buttonPrefab, buttonParent);
                 var stepButton = button.GetComponentInChildren<OperatorStepButton>();
@@ -68,7 +68,7 @@ namespace SceneBehaviours.OperationOperator
         {
             descriptionText.text = OperatorRuntimeData.selectedStep.Description;
             operationNameText.text = OperatorRuntimeData.selectedOperation.Description;
-            stepNumberText.text = $"Passo {OperatorRuntimeData.selectedStep.StepIndex.ToString()} de {ManagerRuntimeData.steps.Steps.Count}";
+            stepNumberText.text = $"Passo {OperatorRuntimeData.selectedStep.StepIndex.ToString()} de {OperatorRuntimeData.steps.Steps.Count}";
         }
         
         public async void UnlockNextButton()

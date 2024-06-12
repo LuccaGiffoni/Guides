@@ -5,6 +5,7 @@ using Database.Settings;
 using Helper;
 using KBCore.Refs;
 using Language;
+using SceneBehaviours.OperationManager;
 using UnityEngine;
 
 namespace Anchor
@@ -13,6 +14,7 @@ namespace Anchor
     {
         [Header("References")]
         [SerializeField, Scene] private PopupManager popupManager;
+        [SerializeField, Scene] private OperationManagerBehaviour operationManagerBehaviour;
         
         public async void SaveSpatialAnchor() => await SaveSpatialAnchorToDatabase();
         private async Task SaveSpatialAnchorToDatabase()
@@ -27,6 +29,8 @@ namespace Anchor
                 popupManager.SendMessageToUser(AnchorLogMessages.anchorSavedToDatabase, PopupType.Info);
                 ManagerRuntimeData.activeAnchor.GetComponent<SpatialAnchor>().SetSpatialAnchorData(AnchorLogMessages.anchorSavedToDatabase,
                     ManagerRuntimeData.activeAnchor.Uuid.ToString());
+
+                await operationManagerBehaviour.GetStepsForOperation();
             }
             catch (Exception e) { popupManager.SendMessageToUser(AnchorLogMessages.LogErrorWhileSavingAnchor(e.Message), PopupType.Error); }
         }

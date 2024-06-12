@@ -1194,7 +1194,6 @@ GameObject:
   m_Component:
   - component: {fileID: 999170623}
   - component: {fileID: 999170621}
-  - component: {fileID: 999170625}
   - component: {fileID: 999170626}
   m_Layer: 0
   m_Name: SpatialAnchorCore
@@ -1242,19 +1241,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1642670534}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &999170625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 999170620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e80fb40d22f74913aeea2fd800d1682e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  popupManager: {fileID: 213387031}
 --- !u!114 &999170626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1813,8 +1799,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   operationOperatorBehaviour: {fileID: 833791095}
-  managerPickPosition: {fileID: 5354188862167544933, guid: 8b0a33cfd65a32e4b87287a71fd9866b, type: 3}
-  operatorPickPosition: {fileID: 2549305735535943147, guid: 4eb3d16eecee6694aa2dcaafad8510df, type: 3}
+  popupManager: {fileID: 213387031}
+  pickPositionPrefab: {fileID: 2549305735535943147, guid: 4eb3d16eecee6694aa2dcaafad8510df, type: 3}
 --- !u!1001 &1963376587
 PrefabInstance:
   m_ObjectHideFlags: 0

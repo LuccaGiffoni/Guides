@@ -44,20 +44,11 @@ namespace PickPositions
         [SerializeField] private Material right;
 
         private const string HandTag = "Hands";
-
-        public void SetDefaultPickPosition(int index)
-        {
-            gameObject.transform.localScale = new Vector3(initialScale, initialScale, initialScale);
-            
-            foreach (var text in facesText) text.text = stepIndex.ToString();
-
-            stepIndex = index;
-            isSaved = false;
-        }
         
         public void SetPickPosition(int index, Vector3 scale, Vector3 position, Quaternion rotation)
         {
-            gameObject.transform.SetLocalPositionAndRotation(position, rotation);
+            gameObject.transform.localPosition = position;
+            gameObject.transform.rotation = rotation;
             gameObject.transform.localScale = scale;
             
             foreach (var text in facesText) text.text = stepIndex.ToString();

@@ -5,6 +5,7 @@ using Helper;
 using KBCore.Refs;
 using Language;
 using Meta.XR.BuildingBlocks;
+using PickPositions;
 using SceneBehaviours.OperationManager;
 using UnityEngine;
 
@@ -14,9 +15,13 @@ namespace Anchor
     {
         [Header("References")]
         [SerializeField, Self] private SpatialAnchorCoreBuildingBlock anchorCore;
+        [SerializeField] private SpatialAnchorSpawnerBuildingBlock anchorSpawner;
         [SerializeField, Self] private SpatialAnchorDatabase anchorDatabase;
         [SerializeField, Scene] private PopupManager popupManager;
         [SerializeField, Scene] private OperationManagerBehaviour operationManagerBehaviour;
+        [SerializeField] private ManagerPickPositionLoader managerPickPositionLoader;
+
+        [SerializeField, Scene] private OVRCameraRig _cameraRig;
         
         [Header("Anchor")]
         [SerializeField, Tooltip("This prefab will get instantiated every time the user creates a new SpatialAnchor")] public GameObject anchorPrefab;
@@ -27,6 +32,15 @@ namespace Anchor
         {
             anchorCore.OnAnchorCreateCompleted.AddListener(HandleAnchorCreateCompleted);
             anchorCore.OnAnchorsLoadCompleted.AddListener(HandleAnchorLoadCompleted);
+
+            if (ManagerRuntimeData.selectedOperation.AnchorUuid != Guid.Empty)
+            {
+                LoadSavedSpatialAnchorToScene();
+            }
+            else
+            {
+                popupManager.SendMessageToUser("Crie uma âncora para poder começar.", PopupType.Warning);
+            }
         }
 
         public void ToggleAnchorVisibility()
@@ -87,18 +101,19 @@ namespace Anchor
                 popupManager.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabase, PopupType.Info);
             }
         }
-
-        private void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> anchors)
+        
+        private async void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> anchors)
         {
+            // Load data to scene
             ManagerRuntimeData.activeAnchor = anchors[0];
+            await operationManagerBehaviour.GetStepsForOperation();
             
             if(ManagerRuntimeData.activeAnchor == null) return;
             var spatialAnchor = ManagerRuntimeData.activeAnchor.GetComponent<SpatialAnchor>();
-
-            if (ManagerRuntimeData.selectedOperation != null)
-                operationManagerBehaviour.UpdatePanelInformation();
-            
             spatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorLocalized, ManagerRuntimeData.activeAnchor.Uuid.ToString());
+
+            managerPickPositionLoader.CreateAllSavedPickPositions();
+            operationManagerBehaviour.UpdatePanelInformation();
         }
         
         public void LoadSavedSpatialAnchorToScene()

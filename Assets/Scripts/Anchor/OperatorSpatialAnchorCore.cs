@@ -28,8 +28,6 @@ namespace Anchor
         private void OnEnable() => anchorCore.OnAnchorsLoadCompleted.AddListener(HandleAnchorLoadCompleted);
         private void OnDisable() => anchorCore.OnAnchorsLoadCompleted.RemoveListener(HandleAnchorLoadCompleted);
 
-        public void ToggleAnchorVisibility() => OperatorRuntimeData.activeAnchor.gameObject.SetActive(!OperatorRuntimeData.activeAnchor.gameObject.activeInHierarchy);
-        
         private void LoadSavedSpatialAnchorToOperatorScene()
         {
             if(OperatorRuntimeData.selectedOperation.AnchorUuid == Guid.Empty)
@@ -37,7 +35,8 @@ namespace Anchor
                 popupManager.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, PopupType.Warning);
                 return;
             }
-            
+
+            Debug.Log(OperatorRuntimeData.selectedOperation.AnchorUuid.ToString());
             var guids = new List<Guid> { OperatorRuntimeData.selectedOperation.AnchorUuid };
             
             popupManager.SendMessageToUser(AnchorLogMessages.tryingToFindAnchor, PopupType.Info);
@@ -46,6 +45,9 @@ namespace Anchor
         
         private async void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> anchors)
         {
+            if(anchors.Count == 0){ Debug.Log("No anchor found");
+                return;
+            }
             OperatorRuntimeData.activeAnchor = anchors[0];
             var spatialAnchor = OperatorRuntimeData.activeAnchor.GetComponent<SpatialAnchor>();
 

@@ -11,15 +11,14 @@ namespace PickPositions
     public class ManagerPickPositionLoader : ValidatedMonoBehaviour
     {
         [Header("References")]
-        [SerializeField, Scene] private OperationManagerBehaviour operationManagerBehaviour;
+        [SerializeField] private OperationManagerBehaviour operationManagerBehaviour;
+        [SerializeField] private PickPositionCreator pickPositionCreator;
         [SerializeField, Scene] private PopupManager popupManager;
         
         [Header("Pick Positions")]
         [SerializeField] private GameObject pickPositionPrefab;
 
-        private void OnEnable() => operationManagerBehaviour.onStepsReceived.AddListener(CreateAllSavedPickPositions);
-
-        private void CreateAllSavedPickPositions()
+        public void CreateAllSavedPickPositions()
         {
             foreach (var step in ManagerRuntimeData.steps.Steps)
             {
@@ -30,18 +29,18 @@ namespace PickPositions
                 var scale = new Vector3(step.SX, step.SY, step.SZ);
             
                 var isPickPositionValid = Instantiate(pickPositionPrefab, position, Quaternion.identity,
-                    ManagerRuntimeData.activeAnchor.transform).TryGetComponent(out OperatorPickPosition createdPickPosition);
+                    ManagerRuntimeData.activeAnchor.transform).TryGetComponent(out ManagerPickPosition createdPickPosition);
+                createdPickPosition.name = $"Step {step.StepIndex}";
+                
                 if (!isPickPositionValid)
                 {
                     popupManager.SendMessageToUser(PickPositionLogMessages.pickPositionAlreadyCreatedOrLoaded, PopupType.Warning);
                     return;
                 }
-                
-                createdPickPosition.SetPickPosition(ManagerRuntimeData.selectedStep.StepIndex, scale, position, rotation);
+
+                createdPickPosition.SetPickPosition(step.StepIndex, scale, position, rotation);
                 ManagerRuntimeData.pickPositionsOnScene.Add(createdPickPosition);
             }
         }
-        
-        private void OnDisable() => operationManagerBehaviour.onStepsReceived.RemoveListener(CreateAllSavedPickPositions);
     }
 }
