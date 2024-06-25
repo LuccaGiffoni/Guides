@@ -5,7 +5,7 @@ using Database.Settings;
 using Newtonsoft.Json;
 using Scripts_v2.Data.Models;
 using Scripts_v2.Data.Responses;
-using Scripts_v2.Utilities;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -13,7 +13,6 @@ namespace Scripts_v2.Data.Access
 {
     public class DatabaseRepository : IDatabaseRepository
     {
-        // Get all operations from the database
         public async Task<Response<List<Operation>>> GetAllOperationsAsync()
         {
             using var uwr = UnityWebRequest.Get(ConnectionSettings.apiUrl + "?action=get_operations");
