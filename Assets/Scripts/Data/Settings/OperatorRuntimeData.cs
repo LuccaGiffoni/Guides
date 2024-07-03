@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Database.Entities;
+using Data.Entities;
 using PickPositions;
-using SceneBehaviours.OperationManager;
 using UnityEngine;
 
-namespace Database.Settings
+namespace Data.Settings
 {
     public static class OperatorRuntimeData
     {

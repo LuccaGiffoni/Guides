@@ -3201,16 +3201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupManager: {fileID: 213387031}
-  managerPickPositionLoader: {fileID: 922653770}
   sceneTransitionManager: {fileID: 1145937629}
-  buttonPrefab: {fileID: 8908573723230703428, guid: bddf7cbb23658984abcd8e1863117e76, type: 3}
-  buttonParent: {fileID: 5133693716013814388}
-  descriptionText: {fileID: 279737145}
-  operationNameText: {fileID: 2033174366}
-  stepNumberText: {fileID: 5133693716501781440}
-  onStepsReceived:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &833791097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4322,12 +4313,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anchorCore: {fileID: 999170621}
-  anchorSpawner: {fileID: 0}
+  anchorSpawner: {fileID: 19505771}
   anchorDatabase: {fileID: 999170625}
   popupManager: {fileID: 213387031}
   operationManagerBehaviour: {fileID: 833791096}
   managerPickPositionLoader: {fileID: 922653770}
-  _cameraRig: {fileID: 1310056275}
+  cameraRig: {fileID: 1310056275}
   anchorPrefab: {fileID: 789684486510353890, guid: fc5d6678f70f1d74a80851d642528940, type: 3}
 --- !u!114 &999170625
 MonoBehaviour:

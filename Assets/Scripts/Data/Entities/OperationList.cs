@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Database.Entities
+namespace Data.Entities
 {
     public class OperationList
     {

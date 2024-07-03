@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Database.Settings
+namespace Data.Settings
 {
     public class ServerManager : ValidatedMonoBehaviour
     {

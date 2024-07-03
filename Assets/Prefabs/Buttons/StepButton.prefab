@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 2611533959401778495}
   - component: {fileID: 3981724320227326313}
   - component: {fileID: 5553235721553521218}
-  - component: {fileID: 1814707510820531633}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -182,20 +181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepNumberText: {fileID: 3981724320227326313}
-  operationManagerBehaviour: {fileID: 0}
---- !u!114 &1814707510820531633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 33191213303816573}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb76453d31df4eaebd722846c585b227, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stepButton: {fileID: 5553235721553521218}
   operationManagerBehaviour: {fileID: 0}
 --- !u!1 &6474502152365264269
 GameObject:

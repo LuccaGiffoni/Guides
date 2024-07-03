@@ -10,7 +10,9 @@
         public static string anchorSavedToDatabase => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora salva no banco de dados!" : "Anchor saved to database!";
         public static string anchorClearedFromDatabase => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora removida do banco de dados!" : "Anchor removed from database!";
         public static string anchorClearedFromDatabaseAndMemory => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora removida do banco de dados e da memória!" : "Anchor removed from database!";
-        public static string anchorNotFoundOnDatabase => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora não encontrada no banco de dados!" : "Anchor not found on database!";
+        public static string anchorNotFoundOnDatabase => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? 
+            "Não existe uma âncora salva no banco de dados para essa operação. Crie uma para começar!" : "There's none saved anchor on database for this operation. Create one to start!";
+        public static string anchorNotFoundOnDevice => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora não encontrada na memória do Quest!" : "Anchor not found on Quest's memory!";
         public static string tryingToFindAnchor => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Buscando âncora no banco de dados e na memória!" : "Searching anchor on database and memory!";
 
         public static string createdAnchorNotSavedYet => Settings.UserPreferences.activeLanguage == Languages.Portuguese ? "Âncora criada, mas não salva no banco de dados!" : "Anchor created, but not saved to database!";

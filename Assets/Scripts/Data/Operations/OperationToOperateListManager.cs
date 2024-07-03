@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using Database.Settings;
-using Database.Entities;
-using Database.Methods;
+using Data.Entities;
+using Data.Methods;
+using Data.Settings;
 using Helper;
 using KBCore.Refs;
 using Scene;
 using UnityEngine;
 
-namespace Database.Operations
+namespace Data.Operations
 {
     public class OperationToOperateListManager : ValidatedMonoBehaviour
     {

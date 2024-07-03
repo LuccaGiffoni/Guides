@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Database.Methods;
-using Database.Settings;
+using Data.Methods;
+using Data.Settings;
+using EventSystem;
+using EventSystem.Enums;
 using Helper;
 using KBCore.Refs;
 using Language;
+using Responses;
 using SceneBehaviours.OperationManager;
 using UnityEngine;
 
@@ -30,7 +33,15 @@ namespace Anchor
                 ManagerRuntimeData.activeAnchor.GetComponent<SpatialAnchor>().SetSpatialAnchorData(AnchorLogMessages.anchorSavedToDatabase,
                     ManagerRuntimeData.activeAnchor.Uuid.ToString());
 
-                await operationManagerBehaviour.GetStepsForOperation();
+                var activeAnchor = FindFirstObjectByType<OVRSpatialAnchor>();
+                if (activeAnchor == null)
+                {
+                    popupManager.SendMessageToUser(AnchorLogMessages.savedAnchorIsNotLoaded, PopupType.Error);
+                    return;
+                }
+                
+                var created = Response<OVRSpatialAnchor>.Success(activeAnchor, AnchorLogMessages.anchorLocalized);
+                EventManager.AnchorEvents.OnAnchorLoaded.Get(EChannels.Anchor).Invoke(created);
             }
             catch (Exception e) { popupManager.SendMessageToUser(AnchorLogMessages.LogErrorWhileSavingAnchor(e.Message), PopupType.Error); }
         }

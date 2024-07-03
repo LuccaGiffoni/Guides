@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Database.Settings;
 using KBCore.Refs;
 using SceneBehaviours.OperationManager;
 using SceneBehaviours.OperationOperator;
@@ -42,7 +41,7 @@ namespace PickPositions
 
         public void SetPickPosition(int index, Vector3 scale, Vector3 position, Quaternion rotation)
         {
-            gameObject.transform.SetLocalPositionAndRotation(position, rotation);
+            //gameObject.transform.SetLocalPositionAndRotation(position, rotation);
             gameObject.transform.localScale = scale;
             
             stepIndex = index;

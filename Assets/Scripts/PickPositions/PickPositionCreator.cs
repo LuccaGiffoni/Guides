@@ -1,4 +1,4 @@
-﻿using Database.Settings;
+﻿using Data.Settings;
 using Helper;
 using KBCore.Refs;
 using Language;

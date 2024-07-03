@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Database.Settings;
+using Data.Settings;
 using Newtonsoft.Json;
 using Scripts_v2.Data.Models;
 using Scripts_v2.Data.Responses;

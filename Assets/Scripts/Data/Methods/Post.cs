@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using Database.Settings;
+using Data.Settings;
 using Language;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Database.Methods
+namespace Data.Methods
 {
     public static class Post
     {
@@ -60,16 +60,17 @@ namespace Database.Methods
             {
                 WWWForm form = new();
                 form.AddField("stepId", stepId.ToString());
-                form.AddField("PX", pickPosition.transform.localPosition.x.ToString("n4").Replace(",", "."));
-                form.AddField("PY", pickPosition.transform.localPosition.y.ToString("n4").Replace(",", "."));
-                form.AddField("PZ", pickPosition.transform.localPosition.z.ToString("n4").Replace(",", "."));
-                form.AddField("RX", pickPosition.rotation.x.ToString("n4").Replace(",", "."));
-                form.AddField("RY", pickPosition.rotation.y.ToString("n4").Replace(",", "."));
-                form.AddField("RZ", pickPosition.rotation.z.ToString("n4").Replace(",", "."));
-                form.AddField("RW", pickPosition.rotation.w.ToString("n4").Replace(",", "."));
+                form.AddField("PX", pickPosition.localPosition.x.ToString("n4").Replace(",", "."));
+                form.AddField("PY", pickPosition.localPosition.y.ToString("n4").Replace(",", "."));
+                form.AddField("PZ", pickPosition.localPosition.z.ToString("n4").Replace(",", "."));
+                form.AddField("RX", pickPosition.localRotation.x.ToString("n4").Replace(",", "."));
+                form.AddField("RY", pickPosition.localRotation.y.ToString("n4").Replace(",", "."));
+                form.AddField("RZ", pickPosition.localRotation.z.ToString("n4").Replace(",", "."));
+                form.AddField("RW", pickPosition.localRotation.w.ToString("n4").Replace(",", "."));
                 form.AddField("SX", pickPosition.localScale.x.ToString("n4").Replace(",", "."));
                 form.AddField("SY", pickPosition.localScale.y.ToString("n4").Replace(",", "."));
                 form.AddField("SZ", pickPosition.localScale.z.ToString("n4").Replace(",", "."));
+                
 
                 var updatePickPositionString = ConnectionSettings.apiUrl + "?action=update_step";
                 using var uwr = UnityWebRequest.Post(updatePickPositionString, form);

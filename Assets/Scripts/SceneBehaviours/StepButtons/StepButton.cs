@@ -1,4 +1,7 @@
-﻿using KBCore.Refs;
+﻿using EventSystem;
+using EventSystem.Enums;
+using KBCore.Refs;
+using Responses;
 using SceneBehaviours.OperationManager;
 using TMPro;
 using UnityEngine;
@@ -19,6 +22,10 @@ namespace SceneBehaviours.StepButtons
             if(operationManagerBehaviour != null) Debug.Log(operationManagerBehaviour.gameObject.name);
         }
 
-        public void MoveToThisStep() => operationManagerBehaviour.MoveToStep(stepIndex);
+        public void MoveToThisStep()
+        {
+            var response = Response<int>.Success(stepIndex);
+            EventManager.StepEvents.OnStepChanged.Get(EChannels.Step).Invoke(response);
+        }
     }
 }

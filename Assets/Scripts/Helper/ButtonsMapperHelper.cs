@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Database.Settings;
+using Data.Settings;
 using KBCore.Refs;
 using Meta.XR.BuildingBlocks;
 using SceneBehaviours.OperationManager;

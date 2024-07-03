@@ -1,5 +1,5 @@
-﻿using Database.Methods;
-using Database.Settings;
+﻿using Data.Methods;
+using Data.Settings;
 using Helper;
 using KBCore.Refs;
 using Language;

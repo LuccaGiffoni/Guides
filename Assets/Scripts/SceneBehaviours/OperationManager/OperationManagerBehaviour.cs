@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Database.Methods;
-using Database.Settings;
+﻿using Data.Entities;
+using Data.Methods;
+using Data.Settings;
+using EventSystem;
+using EventSystem.Enums;
 using Helper;
 using KBCore.Refs;
 using Language;
 using PickPositions;
+using Responses;
 using Scene;
-using SceneBehaviours.StepButtons;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace SceneBehaviours.OperationManager
 {
@@ -20,32 +18,39 @@ namespace SceneBehaviours.OperationManager
     {
         [Header("References")]
         [SerializeField, Scene] private PopupManager popupManager;
-        [SerializeField] private ManagerPickPositionLoader managerPickPositionLoader;
-        [SerializeField] private SceneTransitionManager sceneTransitionManager;
+        [SerializeField, Scene] private SceneTransitionManager sceneTransitionManager;
 
-        [Header("Button Settings")]
-        [SerializeField] private GameObject buttonPrefab;
-        [SerializeField] private Transform buttonParent;
+        private StepList steps;
         
-        [Header("User Interface")]
-        [SerializeField] private TextMeshProUGUI descriptionText;
-        [SerializeField] private TextMeshProUGUI operationNameText; 
-        [SerializeField] private TextMeshProUGUI stepNumberText;
+        #region Listeners
 
-        public async Task GetStepsForOperation()
+        private void OnEnable()
+        {
+            EventManager.AnchorEvents.OnAnchorLoaded.Get(EChannels.Anchor).AddListener(GetStepsForOperation);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.AnchorEvents.OnAnchorLoaded.Get(EChannels.Anchor).RemoveListener(GetStepsForOperation);
+        }
+
+        #endregion
+
+        private async void GetStepsForOperation(Response<OVRSpatialAnchor> receivedResponse)
         {
             var i = 1;
 
             while (true)
             {
-                var localReceivedSteps = await Get.GetStepsForOperationAsync(ManagerRuntimeData.selectedOperation.OperationID, popupManager);
-
-                if (localReceivedSteps.Steps.Count > 0)
+                steps = await Get.GetStepsForOperationAsync(Operation.Read(Application.persistentDataPath).OperationID, popupManager);
+                
+                if (steps.Steps.Count > 0)
                 {
-                    popupManager.SendMessageToUser(DatabaseLogMessages.ReturnedSteps(localReceivedSteps.Steps.Count), PopupType.Info);
-                    ManagerRuntimeData.SaveSteps(localReceivedSteps.Steps);
+                    popupManager.SendMessageToUser(DatabaseLogMessages.ReturnedSteps(steps.Steps.Count), PopupType.Info);
+                    steps.Save(Application.persistentDataPath);
 
-                    CreateButtons();
+                    var successResponse = Response<StepList>.Success(steps, DatabaseLogMessages.ReturnedSteps(steps.Steps.Count));
+                    EventManager.DatabaseEvents.OnStepsLoaded.Get(EChannels.Database).Invoke(successResponse);
                 }
                 else
                 {
@@ -56,47 +61,14 @@ namespace SceneBehaviours.OperationManager
                         
                         continue;
                     }
+
+                    popupManager.SendMessageToUser(DatabaseLogMessages.NoneStepFoundOnDatabase + $" Limite de tentativas atingido!", PopupType.Error);
                 }
 
                 break;
             }
         }
-
-        private void CreateButtons()
-        {
-            ManagerRuntimeData.stepButtons.Clear();
-
-            foreach (var step in ManagerRuntimeData.steps.Steps)
-            {
-                var button = Instantiate(buttonPrefab, buttonParent);
-                var stepButton = button.GetComponentInChildren<StepButton>();
-                
-                stepButton.stepIndex = step.StepIndex;
-                stepButton.stepNumberText.text = step.StepIndex.ToString();
-
-                ManagerRuntimeData.stepButtons.Add(button);
-            }
-            
-            UpdatePanelInformation();
-        }
         
-        public void UpdatePanelInformation()
-        {
-            descriptionText.text = ManagerRuntimeData.selectedStep.Description;
-            operationNameText.text = ManagerRuntimeData.selectedOperation.Description;
-            stepNumberText.text = $"Passo {ManagerRuntimeData.selectedStep.StepIndex.ToString()} de {ManagerRuntimeData.steps.Steps.Count}";
-
-            stepNumberText.text += ManagerRuntimeData.ReturnActivePickPosition()
-                ? "\n" + ManagerRuntimeData.ReturnActivePickPosition().gameObject.name
-                : "\nThere's no Active PickPosition...";
-        }
-
-        public void MoveToStep(int index)
-        {
-            ManagerRuntimeData.selectedStep = ManagerRuntimeData.steps.Steps[index - 1];
-            UpdatePanelInformation();
-        }
-
         public void SaveAndExit()
         {
             ManagerRuntimeData.ClearData();

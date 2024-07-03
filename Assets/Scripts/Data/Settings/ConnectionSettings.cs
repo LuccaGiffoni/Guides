@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Database.Settings
+namespace Data.Settings
 {
     public static class ConnectionSettings
     {

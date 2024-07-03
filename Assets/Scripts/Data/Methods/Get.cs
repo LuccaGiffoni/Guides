@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using Database.Entities;
-using Database.Settings;
+using Data.Entities;
+using Data.Settings;
 using Helper;
 using Language;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Database.Methods
+namespace Data.Methods
 {
     public static class Get
     { 
