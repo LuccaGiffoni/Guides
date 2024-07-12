@@ -1,4 +1,4 @@
-﻿using Language;
+﻿using Helper;
 
 namespace Settings
 {
