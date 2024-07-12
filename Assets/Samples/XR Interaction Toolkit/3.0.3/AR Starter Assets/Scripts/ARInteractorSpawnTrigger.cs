@@ -1,12 +1,14 @@
 ﻿#if AR_FOUNDATION_PRESENT
+using Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Scripts;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Readers;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
-using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.AR_Starter_Assets.Scripts
 {
     /// <summary>
     /// Spawns an object at an <see cref="IARInteractor"/>'s raycast hit position when a trigger is activated.

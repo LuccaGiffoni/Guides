@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using Unity.XR.CoreUtils.Bindings;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Scripts
 {
     /// <summary>
     /// Use this class to mediate the interactors for a controller under different interaction states

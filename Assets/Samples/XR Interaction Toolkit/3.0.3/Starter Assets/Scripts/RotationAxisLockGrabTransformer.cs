@@ -1,7 +1,9 @@
+using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Transformers;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Scripts
 {
     /// <summary>
     /// An XR grab transformer that allows for the locking of specific rotation axes. When an object is grabbed and manipulated,

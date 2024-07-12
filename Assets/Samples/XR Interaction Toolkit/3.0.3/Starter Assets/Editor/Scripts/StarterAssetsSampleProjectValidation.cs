@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.XR.CoreUtils.Editor;
+using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
+using UnityEditor.XR.Interaction.Toolkit;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace UnityEditor.XR.Interaction.Toolkit.Samples
+namespace Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Editor.Scripts
 {
     /// <summary>
     /// Unity Editor class which registers Project Validation rules for the Starter Assets sample package.

@@ -1,11 +1,10 @@
-﻿using System;
-using Unity.Mathematics;
+﻿using Unity.Mathematics;
 using Unity.XR.CoreUtils.Bindings;
-using UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.State;
+using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Filtering;
 using UnityEngine.XR.Interaction.Toolkit.Utilities.Tweenables.Primitives;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Scripts
 {
     /// <summary>
     /// Follow animation affordance for <see cref="IPokeStateDataProvider"/>, such as <see cref="XRPokeFilter"/>.

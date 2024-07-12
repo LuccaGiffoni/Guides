@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Data.Enums;
 using Data.Methods;
+using Data.Responses;
+using Data.Runtime;
 using Data.Settings;
 using EventSystem;
-using EventSystem.Enums;
 using Helper;
 using KBCore.Refs;
-using Language;
-using Responses;
-using SceneBehaviours.OperationManager;
+using Messages;
+using SceneBehaviours.Manager;
+using Services.Implementations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Anchor
 {
     public class SpatialAnchorDatabase : ValidatedMonoBehaviour
     {
+        [FormerlySerializedAs("popupManager")]
         [Header("References")]
-        [SerializeField, Scene] private PopupManager popupManager;
+        [SerializeField, Scene] private PopupService popupService;
         [SerializeField, Scene] private OperationManagerBehaviour operationManagerBehaviour;
         
         public async void SaveSpatialAnchor() => await SaveSpatialAnchorToDatabase();
@@ -29,21 +33,21 @@ namespace Anchor
                 
                 if (!task) return;
 
-                popupManager.SendMessageToUser(AnchorLogMessages.anchorSavedToDatabase, PopupType.Info);
+                popupService.SendMessageToUser(AnchorLogMessages.anchorSavedToDatabase, EPopupType.Info);
                 ManagerRuntimeData.activeAnchor.GetComponent<SpatialAnchor>().SetSpatialAnchorData(AnchorLogMessages.anchorSavedToDatabase,
                     ManagerRuntimeData.activeAnchor.Uuid.ToString());
 
                 var activeAnchor = FindFirstObjectByType<OVRSpatialAnchor>();
                 if (activeAnchor == null)
                 {
-                    popupManager.SendMessageToUser(AnchorLogMessages.savedAnchorIsNotLoaded, PopupType.Error);
+                    popupService.SendMessageToUser(AnchorLogMessages.savedAnchorIsNotLoaded, EPopupType.Error);
                     return;
                 }
                 
                 var created = Response<OVRSpatialAnchor>.Success(activeAnchor, AnchorLogMessages.anchorLocalized);
                 EventManager.AnchorEvents.OnAnchorLoaded.Get(EChannels.Anchor).Invoke(created);
             }
-            catch (Exception e) { popupManager.SendMessageToUser(AnchorLogMessages.LogErrorWhileSavingAnchor(e.Message), PopupType.Error); }
+            catch (Exception e) { popupService.SendMessageToUser(AnchorLogMessages.LogErrorWhileSavingAnchor(e.Message), EPopupType.Error); }
         }
 
         public async Task ClearSpatialAnchorFromDatabase()
@@ -54,11 +58,11 @@ namespace Anchor
 
                 if (result)
                 {
-                    popupManager.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabase, PopupType.Info);
+                    popupService.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabase, EPopupType.Info);
                     ManagerRuntimeData.activeAnchor = null;
                 }
             }
-            catch (Exception e) { popupManager.SendMessageToUser(AnchorLogMessages.LogErrorWhileClearingAnchor(e.Message), PopupType.Error); }
+            catch (Exception e) { popupService.SendMessageToUser(AnchorLogMessages.LogErrorWhileClearingAnchor(e.Message), EPopupType.Error); }
         }
     }
 }

@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
+using InputDevice = UnityEngine.XR.InputDevice;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Scripts
 {
     /// <summary>
     /// Manages input fallback for <see cref="XRGazeInteractor"/> when eye tracking is not available.
@@ -42,7 +45,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
                 return;
             }
 
-            foreach (var device in InputSystem.InputSystem.devices)
+            foreach (var device in UnityEngine.InputSystem.InputSystem.devices)
             {
                 if (device.layout == k_EyeGazeLayoutName)
                 {
@@ -55,7 +58,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             Debug.LogWarning($"Could not find a device that supports eye tracking on Awake. {this} has subscribed to device connected events and will activate the GameObject when an eye tracking device is connected.", this);
 
             InputDevices.deviceConnected += OnDeviceConnected;
-            InputSystem.InputSystem.onDeviceChange += OnDeviceChange;
+            UnityEngine.InputSystem.InputSystem.onDeviceChange += OnDeviceChange;
 
             gameObject.SetActive(m_FallbackIfEyeTrackingUnavailable);
         }
@@ -66,7 +69,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
         protected void OnDestroy()
         {
             InputDevices.deviceConnected -= OnDeviceConnected;
-            InputSystem.InputSystem.onDeviceChange -= OnDeviceChange;
+            UnityEngine.InputSystem.InputSystem.onDeviceChange -= OnDeviceChange;
         }
 
         void OnDeviceConnected(InputDevice inputDevice)
@@ -79,7 +82,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             gameObject.SetActive(true);
         }
 
-        void OnDeviceChange(InputSystem.InputDevice device, InputDeviceChange change)
+        void OnDeviceChange(UnityEngine.InputSystem.InputDevice device, InputDeviceChange change)
         {
             if (m_EyeTrackingDeviceFound || change != InputDeviceChange.Added)
                 return;

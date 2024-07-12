@@ -1,9 +1,10 @@
 #if AR_FOUNDATION_PRESENT
-using UnityEngine.XR.ARSubsystems;
+using Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Scripts;
+using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
+using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.AR_Starter_Assets.Scripts
 {
     /// <summary>
     /// Spawns an object on physics trigger enter with an <see cref="ARPlane"/>, at the point of contact on the plane.

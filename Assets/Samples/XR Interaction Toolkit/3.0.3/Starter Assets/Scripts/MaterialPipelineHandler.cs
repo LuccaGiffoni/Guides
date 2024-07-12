@@ -1,10 +1,9 @@
-using UnityEngine.Rendering;
 using System.Collections.Generic;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
+using UnityEngine;
+using UnityEngine.Rendering;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Scripts
 {
 #if UNITY_EDITOR
     [InitializeOnLoad]

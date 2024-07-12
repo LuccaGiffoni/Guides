@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
-using Data.Settings;
+using Data.Enums;
+using Data.Responses;
+using EventSystem;
 using KBCore.Refs;
 using Meta.XR.BuildingBlocks;
-using SceneBehaviours.OperationManager;
 using UnityEngine;
 
 namespace Helper
@@ -16,26 +18,28 @@ namespace Helper
         [SerializeField, Tooltip("List for all the mappers for the Pick Position's features.")] private List<GameObject> pickPositionMapper = new();
         [SerializeField, Tooltip("List for all the mappers for default features.")] private List<GameObject> defaultMapper = new();
 
-        [SerializeField] private OperationManagerCreativeMode operationManagerCreativeMode;
-
-        private bool _isMapperVisible = false;
+        private bool isMapperVisible;
         
-        private void OnEnable() => operationManagerCreativeMode.OnCreativeModeChange.AddListener(HandleMappersVisibility);
-        private void OnDisable() => operationManagerCreativeMode.OnCreativeModeChange.RemoveListener(HandleMappersVisibility);
+        private void OnEnable() => EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).AddListener(HandleMappersVisibility);
+        private void OnDisable() => EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).RemoveListener(HandleMappersVisibility);
 
-        public void HandleMappersVisibility()
+        private void HandleMappersVisibility(Response<EManagerState> response)
         {
-            switch (ManagerRuntimeData.currentCreativeMode)
+            if (!response.isSuccess) return;
+            
+            switch (response.data)
             {
-                case OperationManagerState.None:
+                case EManagerState.None:
                     ChangeVisibilityBasedOnActualVisibility(defaultMapper);
                     break;
-                case OperationManagerState.Anchor:
+                case EManagerState.Anchor:
                     ChangeVisibilityBasedOnActualVisibility(anchorMapper);
                     break;
-                case OperationManagerState.PickPosition:
+                case EManagerState.PickPosition:
                     ChangeVisibilityBasedOnActualVisibility(pickPositionMapper);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
         
@@ -43,15 +47,15 @@ namespace Helper
         {
             SetAllHelpersInactive();
             
-            if (_isMapperVisible)
+            if (isMapperVisible)
             {
                 mapperParent.ForEach(mapper => mapper.SetActive(false));
-                _isMapperVisible = false;
+                isMapperVisible = false;
             }
             else
             {
                 mapperParent.ForEach(mapper => mapper.SetActive(true));
-                _isMapperVisible = true;
+                isMapperVisible = true;
             }
         }
         

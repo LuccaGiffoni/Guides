@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using Data.Enums;
+using Data.Runtime;
 using Data.Settings;
 using Helper;
 using KBCore.Refs;
-using Language;
+using Messages;
 using Meta.XR.BuildingBlocks;
-using SceneBehaviours.OperationOperator;
+using SceneBehaviours.Operator;
+using Services.Implementations;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Anchor
 {
@@ -15,7 +19,7 @@ namespace Anchor
     {
         [Header("References")]
         [SerializeField, Self] private SpatialAnchorCoreBuildingBlock anchorCore;
-        [SerializeField, Scene] private PopupManager popupManager;
+        [FormerlySerializedAs("popupManager")] [SerializeField, Scene] private PopupService popupService;
         [SerializeField] private OperationOperatorBehaviour operationOperatorBehaviour;
         
         [Header("Anchor")]
@@ -32,14 +36,14 @@ namespace Anchor
         {
             if(OperatorRuntimeData.selectedOperation.AnchorUuid == Guid.Empty)
             {
-                popupManager.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, PopupType.Warning);
+                popupService.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, EPopupType.Warning);
                 return;
             }
 
             Debug.Log(OperatorRuntimeData.selectedOperation.AnchorUuid.ToString());
             var guids = new List<Guid> { OperatorRuntimeData.selectedOperation.AnchorUuid };
             
-            popupManager.SendMessageToUser(AnchorLogMessages.tryingToFindAnchor, PopupType.Info);
+            popupService.SendMessageToUser(AnchorLogMessages.tryingToFindAnchor, EPopupType.Info);
             anchorCore.LoadAndInstantiateAnchors(anchorPrefab, guids);
         }
         

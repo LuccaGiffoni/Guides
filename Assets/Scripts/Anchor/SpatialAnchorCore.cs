@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using Data.Entities;
+using Data.Enums;
+using Data.Responses;
+using Data.Runtime;
 using Data.Settings;
 using EventSystem;
-using EventSystem.Enums;
 using Helper;
 using KBCore.Refs;
-using Language;
+using Messages;
 using Meta.XR.BuildingBlocks;
 using PickPositions;
-using Responses;
-using SceneBehaviours.OperationManager;
+using PickPositions.Roles;
+using SceneBehaviours.Manager;
+using Services.Implementations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Anchor
 {
@@ -21,7 +25,7 @@ namespace Anchor
         [SerializeField, Self] private SpatialAnchorCoreBuildingBlock anchorCore;
         [SerializeField] private SpatialAnchorSpawnerBuildingBlock anchorSpawner;
         [SerializeField, Self] private SpatialAnchorDatabase anchorDatabase;
-        [SerializeField, Scene] private PopupManager popupManager;
+        [FormerlySerializedAs("popupManager")] [SerializeField, Scene] private PopupService popupService;
         [SerializeField, Scene] private OperationManagerBehaviour operationManagerBehaviour;
         [SerializeField] private ManagerPickPositionLoader managerPickPositionLoader;
 
@@ -63,7 +67,7 @@ namespace Anchor
             }
             else
             {
-                popupManager.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, PopupType.Warning);
+                popupService.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, EPopupType.Warning);
                 
                 // Trigger Anchor creation
                 // IMPLEMENT HERE
@@ -80,14 +84,14 @@ namespace Anchor
             
             if (ManagerRuntimeData.selectedOperation.AnchorUuid != Guid.Empty)
             {
-                popupManager.SendMessageToUser(AnchorLogMessages.savedAnchorIsNotLoaded, PopupType.Warning);
+                popupService.SendMessageToUser(AnchorLogMessages.savedAnchorIsNotLoaded, EPopupType.Warning);
                 return;
             }
             
             DeleteUnsavedSpatialAnchorsFromMemory();
             ConfigureUnsavedAnchorOnScene(anchor);
             
-            popupManager.SendMessageToUser(AnchorLogMessages.createdAnchorNotSavedYet, PopupType.Info);
+            popupService.SendMessageToUser(AnchorLogMessages.createdAnchorNotSavedYet, EPopupType.Info);
         }
 
         private void ConfigureUnsavedAnchorOnScene(OVRSpatialAnchor anchor)
@@ -114,14 +118,14 @@ namespace Anchor
                 anchorCore.EraseAnchorByUuid(ManagerRuntimeData.activeAnchor.Uuid);
                 ManagerRuntimeData.activeAnchor = null;
                 
-                popupManager.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabaseAndMemory, PopupType.Info);
+                popupService.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabaseAndMemory, EPopupType.Info);
             }
             else
             {
                 await anchorDatabase.ClearSpatialAnchorFromDatabase();
                 ManagerRuntimeData.activeAnchor = null;
                 
-                popupManager.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabase, PopupType.Info);
+                popupService.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabase, EPopupType.Info);
             }
         }
         
@@ -136,7 +140,7 @@ namespace Anchor
             // Event triggering and responses
             if (foundAnchors.Count <= 0)
             {
-                popupManager.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDevice, PopupType.Error);
+                popupService.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDevice, EPopupType.Error);
                 
                 // Trigger Anchor creation
                 // IMPLEMENT HERE

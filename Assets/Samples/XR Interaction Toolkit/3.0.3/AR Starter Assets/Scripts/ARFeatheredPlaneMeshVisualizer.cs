@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.AR_Starter_Assets.Scripts
 {
     /// <summary>
     /// This plane visualizer demonstrates the use of a feathering effect

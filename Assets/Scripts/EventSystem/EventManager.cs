@@ -1,4 +1,6 @@
-﻿namespace EventSystem
+﻿using EventSystem.Events;
+
+namespace EventSystem
 {
     public static class EventManager
     {

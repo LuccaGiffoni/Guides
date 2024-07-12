@@ -1,6 +1,7 @@
+using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Readers;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Scripts
 {
     /// <summary>
     /// Component which reads input values and drives the thumbstick, trigger, and grip transforms

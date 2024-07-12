@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.XR.CoreUtils.Editor;
+using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
-namespace UnityEditor.XR.Interaction.Toolkit.Samples.ARStarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.AR_Starter_Assets.Editor.Scripts
 {
     /// <summary>
     /// Unity Editor class which registers Project Validation rules for the AR Starter Assets sample,

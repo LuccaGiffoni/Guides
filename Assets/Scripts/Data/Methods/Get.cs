@@ -1,9 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Data.Entities;
+using Data.Enums;
 using Data.Settings;
 using Helper;
-using Language;
+using Messages;
 using Newtonsoft.Json;
+using Services.Implementations;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -12,14 +14,14 @@ namespace Data.Methods
     public static class Get
     { 
         [Tooltip("Get all operations from the database.")]
-        public static async Task<OperationList> GetAllOperationsAsync(PopupManager popupManager)
+        public static async Task<OperationList> GetAllOperationsAsync(PopupService popupService)
         {
             using var uwr = UnityWebRequest.Get(ConnectionSettings.apiUrl + "?action=get_operations");
             await SendWebRequestAsync(uwr);
 
             if (uwr.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
             {
-                popupManager.SendMessageToUser(DatabaseLogMessages.LogErrorWhileReadingData(uwr.error), PopupType.Error);
+                popupService.SendMessageToUser(DatabaseLogMessages.LogErrorWhileReadingData(uwr.error), EPopupType.Error);
                 return null;
             }
 
@@ -31,17 +33,17 @@ namespace Data.Methods
 
             if (localReceivedOperations.Operations.Count == 0)
             {
-                popupManager.SendMessageToUser(DatabaseLogMessages.noServerDataReturned, PopupType.Warning);
+                popupService.SendMessageToUser(DatabaseLogMessages.noServerDataReturned, EPopupType.Warning);
                 return null;
             }
 
-            popupManager.SendMessageToUser(DatabaseLogMessages.ReturnedOperations(localReceivedOperations.Operations.Count), PopupType.Info);
+            popupService.SendMessageToUser(DatabaseLogMessages.ReturnedOperations(localReceivedOperations.Operations.Count), EPopupType.Info);
 
             return localReceivedOperations;
         }
         
         [Tooltip("Get all steps for a specific operation.")]
-        public static async Task<StepList> GetStepsForOperationAsync(int operationId, PopupManager popupManager)
+        public static async Task<StepList> GetStepsForOperationAsync(int operationId, PopupService popupService)
         {
             var stepsUrl = ConnectionSettings.apiUrl + "?action=get_steps&operationId=" + operationId;
 
@@ -50,7 +52,7 @@ namespace Data.Methods
 
             if (uwr.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
             {
-                popupManager.SendMessageToUser(DatabaseLogMessages.LogErrorWhileReadingData(uwr.error), PopupType.Error);
+                popupService.SendMessageToUser(DatabaseLogMessages.LogErrorWhileReadingData(uwr.error), EPopupType.Error);
                 return null;
             }
             

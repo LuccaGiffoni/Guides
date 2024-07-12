@@ -4,8 +4,10 @@ using Data.Methods;
 using Data.Settings;
 using Helper;
 using KBCore.Refs;
-using Scene;
+using Services.Implementations;
+using Transitions;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Data.Operations
 {
@@ -13,7 +15,7 @@ namespace Data.Operations
     {
         [Header("References")]
         [SerializeField, Scene] private SceneTransitionManager sceneTransitionManager;
-        [SerializeField, Scene] private PopupManager popupManager;
+        [FormerlySerializedAs("popupManager")] [SerializeField, Scene] private PopupService popupService;
         
         [Header("Operation List"), Tooltip("The list of operations that are currently in the database.")]
         [SerializeField] private Transform operationList;
@@ -22,7 +24,7 @@ namespace Data.Operations
         private async void Start()
         {
             ConnectionSettings.ConfigureAPIUrl();
-            var result = await Get.GetAllOperationsAsync(popupManager); 
+            var result = await Get.GetAllOperationsAsync(popupService); 
             
             ConfigureOperationList(result.Operations);
         }

@@ -1,7 +1,7 @@
 using Data.Entities;
 using KBCore.Refs;
-using Scene;
 using TMPro;
+using Transitions;
 using UnityEngine;
 
 namespace Data.Operations

@@ -1,10 +1,11 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactables.Visuals;
 using UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.DemoSceneAssets.Scripts
 {
     /// <summary>
     /// A custom reticle for a <see cref="TeleportationMultiAnchorVolume"/> that displays its progress towards evaluating

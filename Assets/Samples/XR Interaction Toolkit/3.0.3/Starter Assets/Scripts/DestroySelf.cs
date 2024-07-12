@@ -1,4 +1,6 @@
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
+using UnityEngine;
+
+namespace Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Scripts
 {
     /// <summary>
     /// Destroys the GameObject it is attached to after a specified amount of time.

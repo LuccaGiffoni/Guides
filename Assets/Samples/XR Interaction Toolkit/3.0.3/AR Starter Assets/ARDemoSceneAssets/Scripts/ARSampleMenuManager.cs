@@ -1,12 +1,13 @@
 #if AR_FOUNDATION_PRESENT
+using Samples.XR_Interaction_Toolkit._3._0._3.Starter_Assets.Scripts;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.AR.Inputs;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Readers;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
-using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
-namespace UnityEngine.XR.Interaction.Toolkit.Samples.ARStarterAssets
+namespace Samples.XR_Interaction_Toolkit._3._0._3.AR_Starter_Assets.ARDemoSceneAssets.Scripts
 {
     /// <summary>
     /// Handles dismissing the object menu when clicking out the UI bounds, and showing the
