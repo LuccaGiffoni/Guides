@@ -21,10 +21,10 @@ namespace Data.Runtime
         {
             selectedOperation = null;
             selectedStep = null;
-            steps.Steps.Clear();
+            steps?.Steps.Clear();
             activeAnchor = null;
-            stepButtons.Clear();
-            pickPositionsOnScene.Clear();
+            stepButtons?.Clear();
+            pickPositionsOnScene?.Clear();
             currentCreativeMode = EManagerState.None;
         }
 

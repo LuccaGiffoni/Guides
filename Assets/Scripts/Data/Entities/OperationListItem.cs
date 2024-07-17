@@ -1,14 +1,11 @@
-using Data.Entities;
-using Data.Runtime;
-using Data.Settings;
 using KBCore.Refs;
 using TMPro;
 using Transitions;
 using UnityEngine;
 
-namespace Data.Operations
+namespace Data.Entities
 {
-    public class OperatorOperationListItem : ValidatedMonoBehaviour
+    public class OperationListItem : ValidatedMonoBehaviour
     {
         private Operation operation;
         private SceneTransitionManager sceneTransitionManager;
@@ -17,10 +14,10 @@ namespace Data.Operations
         [SerializeField] private TextMeshProUGUI id;
         [SerializeField] private TextMeshProUGUI description;
             
-        public void SetOperation(Operation op, SceneTransitionManager sceneTransition)
+        public void SetOperation(Operation op, SceneTransitionManager transitionManager)
         {
             operation = op;
-            sceneTransitionManager = sceneTransition;
+            sceneTransitionManager = transitionManager;
             
             id.text = op.OperationID.ToString();
             description.text = op.Description;
@@ -28,7 +25,10 @@ namespace Data.Operations
 
         public void SelectOperation()
         {
-            OperatorRuntimeData.SaveOperation(operation);
+            // Save to local directory
+            operation.Save(Application.persistentDataPath);
+            
+            // Load next scene
             sceneTransitionManager.AutomaticallyLoadNextScene();
         }
     }

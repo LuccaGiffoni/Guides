@@ -1,7 +1,7 @@
-﻿using Data.Enums;
-using Data.Methods;
+﻿using Data.Database;
+using Data.Entities;
+using Data.Enums;
 using Data.Runtime;
-using Data.Settings;
 using KBCore.Refs;
 using Messages;
 using Services.Implementations;
@@ -40,15 +40,13 @@ namespace PickPositions.General
 
         public async void SaveActivePickPosition()
         {
+            var steps = StepList.Read(Application.persistentDataPath).Steps;
+            
             foreach (var pickPosition in ManagerRuntimeData.pickPositionsOnScene)
             {
-                var result = await Post.SavePickPositionToDatabase(ManagerRuntimeData.steps.Steps[pickPosition.stepIndex - 1].StepID,
-                    pickPosition.gameObject.transform);
+                var result = await Post.SavePickPositionToDatabase(steps[pickPosition.stepIndex - 1].StepID, pickPosition.gameObject.transform);
 
-                if (string.IsNullOrEmpty(result))
-                {
-                    popupService.SendMessageToUser(PickPositionLogMessages.pickPositionSaved, EPopupType.Info);
-                }
+                if (string.IsNullOrEmpty(result)) popupService.SendMessageToUser(PickPositionLogMessages.pickPositionSaved, EPopupType.Info);
                 else popupService.SendMessageToUser(PickPositionLogMessages.LogErrorWhileSavingPickPosition(result), EPopupType.Error);
             }
         }

@@ -5,7 +5,7 @@ using Messages;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Data.Methods
+namespace Data.Database
 {
     public static class Post
     {

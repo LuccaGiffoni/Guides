@@ -1,17 +1,16 @@
 using System.Collections.Generic;
+using Data.Database;
 using Data.Entities;
-using Data.Methods;
 using Data.Settings;
-using Helper;
 using KBCore.Refs;
 using Services.Implementations;
 using Transitions;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Data.Operations
+namespace OperationList
 {
-    public class OperationListManager : ValidatedMonoBehaviour
+    public class OperationToOperateListManager : ValidatedMonoBehaviour
     {
         [Header("References")]
         [SerializeField, Scene] private SceneTransitionManager sceneTransitionManager;
@@ -34,7 +33,7 @@ namespace Data.Operations
             foreach (var operation in operationsList)
             {
                 var operationInstance = Instantiate(operationPrefab, operationList);
-                operationInstance.GetComponent<OperationListItem>().SetOperation(operation, sceneTransitionManager);
+                operationInstance.GetComponent<OperatorOperationListItem>().SetOperation(operation, sceneTransitionManager);
             }
         }
     }
