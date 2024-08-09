@@ -4,6 +4,7 @@ using Data.Entities;
 using Data.Enums;
 using Data.Responses;
 using Data.Runtime;
+using Data.ScriptableObjects;
 using Data.Settings;
 using EventSystem;
 using Helper;
@@ -25,7 +26,7 @@ namespace Anchor
         [SerializeField, Self] private SpatialAnchorCoreBuildingBlock anchorCore;
         [SerializeField] private SpatialAnchorSpawnerBuildingBlock anchorSpawner;
         [SerializeField, Self] private SpatialAnchorDatabase anchorDatabase;
-        [FormerlySerializedAs("popupManager")] [SerializeField, Scene] private PopupService popupService;
+        [SerializeField, Scene] private PopupService popupService;
         [SerializeField, Scene] private OperationManagerBehaviour operationManagerBehaviour;
         [SerializeField] private ManagerPickPositionLoader managerPickPositionLoader;
 
@@ -34,8 +35,9 @@ namespace Anchor
         [Header("Anchor")]
         [SerializeField, Tooltip("This prefab will get instantiated every time the user creates a new SpatialAnchor")] public GameObject anchorPrefab;
         
+        [Header("Scriptable Object"), SerializeField] private RuntimeDataForManager runtimeDataForManager;
+
         private readonly List<OVRSpatialAnchor> anchors = new();
-        private Operation operation = null;
 
         #region Listeners
 
@@ -53,36 +55,24 @@ namespace Anchor
 
         #endregion
         
-        private void Start()
-        {
-            TryLoadSpatialAnchor();
-        }
+        private void Start() => TryLoadSpatialAnchor();
 
         private void TryLoadSpatialAnchor()
         {
-            operation = Operation.Read(Application.persistentDataPath);
-            if (operation.AnchorUuid != Guid.Empty)
-            {
-                LoadSavedSpatialAnchorToScene();
-            }
-            else
-            {
-                popupService.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, EPopupType.Warning);
-                
-                // Trigger Anchor creation
-                // IMPLEMENT HERE
-            }
+            runtimeDataForManager.Clear();
+            runtimeDataForManager.Operation = Operation.Read(Application.persistentDataPath);
+            Debug.Log(runtimeDataForManager.Operation.AnchorUuid.ToString());
+
+            if (runtimeDataForManager.Operation.AnchorUuid != Guid.Empty) LoadSavedSpatialAnchorToScene();
+            else popupService.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, EPopupType.Warning);
         }
         
         // Event Responses
         private void HandleAnchorCreateCompleted(OVRSpatialAnchor anchor, OVRSpatialAnchor.OperationResult result)
         {
-            // REFACTOR COMPLETE
-            // REFACTOR COMPLETE
-            // REFACTOR COMPLETE
             if (result != OVRSpatialAnchor.OperationResult.Success) return;
             
-            if (ManagerRuntimeData.selectedOperation.AnchorUuid != Guid.Empty)
+            if (runtimeDataForManager.Operation.AnchorUuid != Guid.Empty)
             {
                 popupService.SendMessageToUser(AnchorLogMessages.savedAnchorIsNotLoaded, EPopupType.Warning);
                 return;
@@ -96,9 +86,10 @@ namespace Anchor
 
         private void ConfigureUnsavedAnchorOnScene(OVRSpatialAnchor anchor)
         {
-            ManagerRuntimeData.activeAnchor = anchor;
-            var spatialAnchor = ManagerRuntimeData.activeAnchor.GetComponent<SpatialAnchor>();
-            spatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorNotSavedYet, ManagerRuntimeData.activeAnchor.Uuid.ToString());
+            runtimeDataForManager.OVRSpatialAnchor = anchor;
+            runtimeDataForManager.SpatialAnchor = anchor.GetComponent<SpatialAnchor>();
+            
+            runtimeDataForManager.SpatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorNotSavedYet, ManagerRuntimeData.activeAnchor.Uuid.ToString());
             
             anchors.Add(anchor);
         }
@@ -112,38 +103,36 @@ namespace Anchor
 
         public async void DeleteSavedAnchorFromMemoryAndDatabase()
         {
-            if (ManagerRuntimeData.activeAnchor != null)
+            if (runtimeDataForManager.OVRSpatialAnchor != null)
             {
                 await anchorDatabase.ClearSpatialAnchorFromDatabase();
-                anchorCore.EraseAnchorByUuid(ManagerRuntimeData.activeAnchor.Uuid);
-                ManagerRuntimeData.activeAnchor = null;
+                anchorCore.EraseAnchorByUuid(runtimeDataForManager.OVRSpatialAnchor.Uuid);
+                
+                runtimeDataForManager.OVRSpatialAnchor = null;
+                runtimeDataForManager.SpatialAnchor = null;
                 
                 popupService.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabaseAndMemory, EPopupType.Info);
             }
             else
             {
                 await anchorDatabase.ClearSpatialAnchorFromDatabase();
-                ManagerRuntimeData.activeAnchor = null;
+                runtimeDataForManager.OVRSpatialAnchor = null;
+                runtimeDataForManager.SpatialAnchor = null;
                 
                 popupService.SendMessageToUser(AnchorLogMessages.anchorClearedFromDatabase, EPopupType.Info);
             }
         }
         
-        // NOT FINISHED YET
         private async void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> foundAnchors)
         {
             // Set anchor
-            var ovrSpatialAnchor = foundAnchors[0];
-            var spatialAnchor  = ovrSpatialAnchor.GetComponent<SpatialAnchor>();
-            spatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorLocalized, ovrSpatialAnchor.Uuid.ToString());
+            runtimeDataForManager.OVRSpatialAnchor = foundAnchors[0];
+            runtimeDataForManager.SpatialAnchor = foundAnchors[0].GetComponent<SpatialAnchor>();
+            runtimeDataForManager.SpatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorLocalized, runtimeDataForManager.OVRSpatialAnchor.Uuid.ToString());
             
-            // Event triggering and responses
             if (foundAnchors.Count <= 0)
             {
                 popupService.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDevice, EPopupType.Error);
-                
-                // Trigger Anchor creation
-                // IMPLEMENT HERE
                 return;
             }
             
@@ -153,7 +142,7 @@ namespace Anchor
         
         public void LoadSavedSpatialAnchorToScene()
         {
-            var guids = new List<Guid> { operation.AnchorUuid };
+            var guids = new List<Guid> { runtimeDataForManager.Operation.AnchorUuid };
             anchorCore.LoadAndInstantiateAnchors(anchorPrefab, guids);
         }
     }

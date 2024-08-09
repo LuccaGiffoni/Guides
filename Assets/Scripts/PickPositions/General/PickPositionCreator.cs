@@ -1,5 +1,8 @@
-﻿using Data.Enums;
+﻿using System.Linq;
+using Data.Entities;
+using Data.Enums;
 using Data.Runtime;
+using Data.ScriptableObjects;
 using Data.Settings;
 using KBCore.Refs;
 using Messages;
@@ -32,6 +35,8 @@ namespace PickPositions.General
         [SerializeField] private TMP_Text deadZoneText;
         [SerializeField] private TMP_Text rotationSpeedText;
         [SerializeField] private TMP_Text translationSpeedText;
+
+       [Header("Runtime Data"), SerializeField] private RuntimeDataForManager runtimeDataForManager;
 
         public ManagerPickPosition pickPositionOnEditMode;
         private OVRSpatialAnchor ovrSpatialAnchor;
@@ -96,7 +101,7 @@ namespace PickPositions.General
         
         private void CreatePickPosition()
         {
-            if (ManagerRuntimeData.ReturnActivePickPosition() || pickPositionOnEditMode != null)
+            if (runtimeDataForManager.ActivePickPosition || pickPositionOnEditMode != null)
             {
                 popupService.SendMessageToUser(PickPositionLogMessages.pickPositionAlreadyCreatedOrLoaded, EPopupType.Warning);
                 return;
@@ -112,15 +117,9 @@ namespace PickPositions.General
                 return;
             }
             
-            createdPickPosition.SetDefaultPickPosition(ManagerRuntimeData.index);
-            
-            // Change from RuntimeData to EventSystem
-            // Old way
-            ManagerRuntimeData.pickPositionsOnScene.Add(createdPickPosition);
-            
-            // New way
-            
-
+            createdPickPosition.SetDefaultPickPosition(runtimeDataForManager.Index);
+            createdPickPosition.stepId = runtimeDataForManager.Index;
+            runtimeDataForManager.PickPositions.Add(createdPickPosition);
             pickPositionOnEditMode = createdPickPosition;
         }
 
@@ -141,33 +140,5 @@ namespace PickPositions.General
 
             pickPositionOnEditMode.gameObject.transform.localScale += new Vector3(scaleChangeX, scaleChangeY, scaleChangeZ);
         }
-
-        #region Sliders
-        
-        public void UpdateDeadZone(float dead)
-        { 
-            deadZone = dead;
-            deadZoneText.text = dead.ToString("F2");
-        }
-
-        public void UpdateTranslation(float translation)
-        {
-            translationSpeed = translation;
-            translationSpeedText.text = translation.ToString("F2");
-        }
-
-        public void UpdateRotation(float rotation)
-        {
-            rotationSpeed = rotation;
-            rotationSpeedText.text = rotation.ToString("F2");
-        }
-
-        public void UpdateSense(float sense)
-        {
-            sensitivity = sense;
-            sensitivityText.text = sense.ToString("F2");
-        }
-        
-        #endregion
     }
 }

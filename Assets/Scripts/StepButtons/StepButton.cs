@@ -1,6 +1,7 @@
 ﻿using Data.Enums;
 using Data.Responses;
 using Data.Runtime;
+using Data.ScriptableObjects;
 using Data.Settings;
 using EventSystem;
 using KBCore.Refs;
@@ -16,18 +17,14 @@ namespace StepButtons
         [SerializeField, Self] public TextMeshProUGUI stepNumberText;
         
         [SerializeField, Scene] private OperationManagerBehaviour operationManagerBehaviour;
+        [Header("Runtime Data"), SerializeField] private RuntimeDataForManager runtimeDataForManager;
 
-        private void Start()
-        {
-            operationManagerBehaviour = FindFirstObjectByType<OperationManagerBehaviour>();
-            
-            if(operationManagerBehaviour != null) Debug.Log(operationManagerBehaviour.gameObject.name);
-        }
+        private void Start() => operationManagerBehaviour = FindFirstObjectByType<OperationManagerBehaviour>();
 
         public void MoveToThisStep()
         {
             var response = Response<int>.Success(stepIndex);
-            ManagerRuntimeData.index = stepIndex; 
+            runtimeDataForManager.Index = stepIndex; 
             
             EventManager.StepEvents.OnStepChanged.Get(EChannels.Step).Invoke(response);
         }

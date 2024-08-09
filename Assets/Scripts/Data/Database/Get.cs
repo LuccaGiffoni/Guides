@@ -2,19 +2,18 @@
 using Data.Entities;
 using Data.Enums;
 using Data.Settings;
-using Helper;
 using Messages;
 using Newtonsoft.Json;
 using Services.Implementations;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Data.Methods
+namespace Data.Database
 {
     public static class Get
     { 
         [Tooltip("Get all operations from the database.")]
-        public static async Task<OperationList> GetAllOperationsAsync(PopupService popupService)
+        public static async Task<Entities.OperationList> GetAllOperationsAsync(PopupService popupService)
         {
             using var uwr = UnityWebRequest.Get(ConnectionSettings.apiUrl + "?action=get_operations");
             await SendWebRequestAsync(uwr);
@@ -29,7 +28,7 @@ namespace Data.Methods
             settings.Converters.Add(new GuidConverter());
             
             var jsonResponse = uwr.downloadHandler.text;
-            var localReceivedOperations = JsonConvert.DeserializeObject<OperationList>("{\"operations\":" + jsonResponse + "}", settings);
+            var localReceivedOperations = JsonConvert.DeserializeObject<Entities.OperationList>("{\"operations\":" + jsonResponse + "}", settings);
 
             if (localReceivedOperations.Operations.Count == 0)
             {

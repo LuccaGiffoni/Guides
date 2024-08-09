@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using Data.Enums;
 using Data.Responses;
-using Data.Runtime;
-using Data.Settings;
+using Data.ScriptableObjects;
 using EventSystem;
 using Meta.XR.BuildingBlocks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace SceneBehaviours.Manager
 {
@@ -14,6 +14,8 @@ namespace SceneBehaviours.Manager
         [SerializeField] private List<GameObject> pickPositionObjects; 
         [SerializeField] private List<GameObject> anchorObjects;
         [SerializeField] private ControllerButtonsMapper defaultControllerMapper;
+
+        [FormerlySerializedAs("runtimeData")] [SerializeField] private RuntimeDataForManager runtimeDataForManager;
     
         public void SetCreativeModeForAnchor()
         {
@@ -23,6 +25,8 @@ namespace SceneBehaviours.Manager
 
             var response = Response<EManagerState>.Success(EManagerState.Anchor);
             EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).Invoke(response);
+            
+            runtimeDataForManager.CreativeMode = EManagerState.Anchor;
         }
 
         public void SetCreativeModeForPickPosition()
@@ -33,6 +37,8 @@ namespace SceneBehaviours.Manager
 
             var response = Response<EManagerState>.Success(EManagerState.PickPosition);
             EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).Invoke(response);
+            
+            runtimeDataForManager.CreativeMode = EManagerState.PickPosition;
         }
 
         public void SetNoneCreativeMode()
@@ -41,10 +47,10 @@ namespace SceneBehaviours.Manager
             foreach (var objects in anchorObjects) objects.SetActive(false);
             defaultControllerMapper.enabled = true;
             
-            ManagerRuntimeData.currentCreativeMode = EManagerState.None;
-
             var response = Response<EManagerState>.Success(EManagerState.None);
             EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).Invoke(response);
+            
+            runtimeDataForManager.CreativeMode = EManagerState.None;
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using Data.Entities;
+﻿using Data.Database;
+using Data.Entities;
 using Data.Enums;
-using Data.Methods;
 using Data.Responses;
 using Data.Runtime;
+using Data.ScriptableObjects;
 using Data.Settings;
 using EventSystem;
 using KBCore.Refs;
@@ -21,7 +22,7 @@ namespace SceneBehaviours.Manager
         [SerializeField, Scene] private PopupService popupService;
         [SerializeField, Scene] private SceneTransitionManager sceneTransitionManager;
 
-        private StepList steps;
+        [Header("Scriptable Object"), SerializeField] private RuntimeDataForManager runtimeDataForManager;
         
         #region Listeners
 
@@ -43,18 +44,15 @@ namespace SceneBehaviours.Manager
 
             while (true)
             {
-                Debug.Log("Reading steps...");
-                steps = await Get.GetStepsForOperationAsync(Operation.Read(Application.persistentDataPath).OperationID, popupService);
+                runtimeDataForManager.Steps = await Get.GetStepsForOperationAsync(runtimeDataForManager.Operation.OperationID, popupService);
                 
-                if (steps.Steps.Count > 0)
+                if (runtimeDataForManager.Steps.Steps.Count > 0)
                 {
-                    popupService.SendMessageToUser(DatabaseLogMessages.ReturnedSteps(steps.Steps.Count), EPopupType.Info);
-                    steps.Save(Application.persistentDataPath);
-
-                    var successResponse = Response<StepList>.Success(steps, DatabaseLogMessages.ReturnedSteps(steps.Steps.Count));
-                    EventManager.DatabaseEvents.OnStepsLoaded.Get(EChannels.Database).Invoke(successResponse);
+                    popupService.SendMessageToUser(DatabaseLogMessages.ReturnedSteps(runtimeDataForManager.Steps.Steps.Count), EPopupType.Info);
                     
-                    Debug.Log("Steps loaded and event triggered!");
+                    var successResponse = Response<StepList>.Success(runtimeDataForManager.Steps, DatabaseLogMessages.ReturnedSteps(runtimeDataForManager.Steps.Steps.Count));
+                    EventManager.DatabaseEvents.OnStepsLoaded.Get(EChannels.Database).Invoke(successResponse);
+                    runtimeDataForManager.Index = 1;
                 }
                 else
                 {

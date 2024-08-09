@@ -8,7 +8,7 @@ namespace Data.Entities
     public class Operation
     {
         public int OperationID;
-        public Guid AnchorUuid = Guid.Empty;
+        public Guid AnchorUuid;
         public string Description;
         public int Status;
 

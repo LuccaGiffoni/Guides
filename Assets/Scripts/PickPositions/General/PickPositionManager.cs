@@ -1,7 +1,9 @@
-﻿using Data.Enums;
-using Data.Methods;
+﻿using System.Linq;
+using Data.Database;
+using Data.Entities;
+using Data.Enums;
 using Data.Runtime;
-using Data.Settings;
+using Data.ScriptableObjects;
 using KBCore.Refs;
 using Messages;
 using Services.Implementations;
@@ -15,6 +17,8 @@ namespace PickPositions.General
         [FormerlySerializedAs("popupManager")] [Header("References"), SerializeField] private PopupService popupService;
         [Header("References"), SerializeField] private PickPositionCreator pickPositionCreator;
 
+        [Header("Runtime Data"), SerializeField] private RuntimeDataForManager runtimeDataForManager;
+
         public async void DeleteActivePickPosition()
         {
             var activePickPosition = ManagerRuntimeData.ReturnActivePickPosition();
@@ -23,7 +27,7 @@ namespace PickPositions.General
                 Destroy(activePickPosition.gameObject);
             else
             {
-                popupService.SendMessageToUser("Não há nenhuma âncora ativa para excluir." , EPopupType.Info);
+                popupService.SendMessageToUser("Não há nenhum PickPosition (ativo) para excluir." , EPopupType.Info);
                 return;
             }
             
@@ -33,24 +37,28 @@ namespace PickPositions.General
             if (result)
             {
                 popupService.SendMessageToUser(PickPositionLogMessages.activePickPositionRemoved, EPopupType.Info);
-                await Post.ClearPickPositionFromDatabase(ManagerRuntimeData.selectedStep.StepID);
+                await Post.ClearPickPositionFromDatabase(activePickPosition.stepId);
             }
             else popupService.SendMessageToUser(PickPositionLogMessages.activePickPositionNotRemoved, EPopupType.Error);
         }
 
+        private bool isSaving = false;
+        
         public async void SaveActivePickPosition()
         {
-            foreach (var pickPosition in ManagerRuntimeData.pickPositionsOnScene)
+            if (isSaving) return;
+            
+            foreach (var pickPosition in runtimeDataForManager.PickPositions)
             {
-                var result = await Post.SavePickPositionToDatabase(ManagerRuntimeData.steps.Steps[pickPosition.stepIndex - 1].StepID,
-                    pickPosition.gameObject.transform);
+                isSaving = true;
+                
+                var result = await Post.SavePickPositionToDatabase(pickPosition.stepId, pickPosition.gameObject.transform);
 
-                if (string.IsNullOrEmpty(result))
-                {
-                    popupService.SendMessageToUser(PickPositionLogMessages.pickPositionSaved, EPopupType.Info);
-                }
+                if (string.IsNullOrEmpty(result)) popupService.SendMessageToUser(PickPositionLogMessages.pickPositionSaved, EPopupType.Info);
                 else popupService.SendMessageToUser(PickPositionLogMessages.LogErrorWhileSavingPickPosition(result), EPopupType.Error);
             }
+
+            isSaving = false;
         }
     }
 }

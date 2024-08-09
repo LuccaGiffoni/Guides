@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Data.Enums;
 using Data.Responses;
+using Data.Runtime;
 using EventSystem;
 using KBCore.Refs;
 using Meta.XR.BuildingBlocks;
@@ -23,6 +24,24 @@ namespace Helper
         private void OnEnable() => EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).AddListener(HandleMappersVisibility);
         private void OnDisable() => EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).RemoveListener(HandleMappersVisibility);
 
+        public void HandleVisibility()
+        {
+            switch (ManagerRuntimeData.currentCreativeMode)
+            {
+                case EManagerState.None:
+                    ChangeVisibilityBasedOnActualVisibility(defaultMapper);
+                    break;
+                case EManagerState.Anchor:
+                    ChangeVisibilityBasedOnActualVisibility(anchorMapper);
+                    break;
+                case EManagerState.PickPosition:
+                    ChangeVisibilityBasedOnActualVisibility(pickPositionMapper);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        
         private void HandleMappersVisibility(Response<EManagerState> response)
         {
             if (!response.isSuccess) return;
