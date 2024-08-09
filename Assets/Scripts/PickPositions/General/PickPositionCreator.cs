@@ -38,20 +38,9 @@ namespace PickPositions.General
 
        [Header("Runtime Data"), SerializeField] private RuntimeDataForManager runtimeDataForManager;
 
-        public ManagerPickPosition pickPositionOnEditMode;
         private OVRSpatialAnchor ovrSpatialAnchor;
         
         private bool aButtonPreviouslyPressed = false;
-
-        private void Start()
-        {
-            pickPositionOnEditMode = null;
-
-            sensitivityText.text = sensitivity.ToString("2F");
-            deadZoneText.text = deadZone.ToString("2F");
-            translationSpeedText.text = translationSpeed.ToString("2F");
-            rotationSpeedText.text = rotationSpeed.ToString("2F");
-        }
         
         private void Update()
         {
@@ -64,7 +53,7 @@ namespace PickPositions.General
                 aButtonPreviouslyPressed = aButtonValue;
             }
 
-            if (pickPositionOnEditMode == null) return;
+            if (runtimeDataForManager.ActivePickPosition == null) return;
             if (pickPositionController.leftController.TryGetFeatureValue(CommonUsages.triggerButton, out var rightGripValue) && rightGripValue) ScalePickPosition();
             if (pickPositionController.rightController.TryGetFeatureValue(CommonUsages.triggerButton, out var leftGripValue) && leftGripValue) RotatePickPosition();
         }
@@ -101,7 +90,7 @@ namespace PickPositions.General
         
         private void CreatePickPosition()
         {
-            if (runtimeDataForManager.ActivePickPosition || pickPositionOnEditMode != null)
+            if (runtimeDataForManager.ActivePickPosition)
             {
                 popupService.SendMessageToUser(PickPositionLogMessages.pickPositionAlreadyCreatedOrLoaded, EPopupType.Warning);
                 return;
@@ -120,13 +109,12 @@ namespace PickPositions.General
             createdPickPosition.SetDefaultPickPosition(runtimeDataForManager.Index);
             createdPickPosition.stepId = runtimeDataForManager.Index;
             runtimeDataForManager.PickPositions.Add(createdPickPosition);
-            pickPositionOnEditMode = createdPickPosition;
         }
 
         private void RotatePickPosition()
         {
             if (!pickPositionController.leftController.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out var angularVelocity)) return;
-            pickPositionOnEditMode.gameObject.transform.Rotate(rotationSpeed * Time.deltaTime * angularVelocity, Space.World);
+            runtimeDataForManager.ActivePickPosition.gameObject.transform.Rotate(rotationSpeed * Time.deltaTime * angularVelocity, Space.World);
         }
 
         private void ScalePickPosition()
@@ -138,7 +126,7 @@ namespace PickPositions.General
             var scaleChangeY = controllerVelocity.y * sensitivity * initialScale * translationSpeed;
             var scaleChangeZ = controllerVelocity.z * sensitivity * initialScale * translationSpeed;
 
-            pickPositionOnEditMode.gameObject.transform.localScale += new Vector3(scaleChangeX, scaleChangeY, scaleChangeZ);
+            runtimeDataForManager.ActivePickPosition.gameObject.transform.localScale += new Vector3(scaleChangeX, scaleChangeY, scaleChangeZ);
         }
     }
 }

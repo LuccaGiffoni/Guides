@@ -1068,6 +1068,7 @@ MonoBehaviour:
   descriptionText: {fileID: 279737145}
   operationNameText: {fileID: 2033174366}
   stepNumberText: {fileID: 5133693716501781440}
+  runtimeDataForManager: {fileID: 11400000, guid: 8d80446ef025159429d255e19c81b9b0, type: 2}
 --- !u!1 &182242891 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 558364332973226996, guid: 2336ba2f70a2a9f4092acdc1e680801d, type: 3}
@@ -3962,7 +3963,6 @@ MonoBehaviour:
   rotationSpeedText: {fileID: 2131979970}
   translationSpeedText: {fileID: 1475518003}
   runtimeDataForManager: {fileID: 11400000, guid: 8d80446ef025159429d255e19c81b9b0, type: 2}
-  pickPositionOnEditMode: {fileID: 0}
 --- !u!1 &953490032
 GameObject:
   m_ObjectHideFlags: 0

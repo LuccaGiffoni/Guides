@@ -73,7 +73,7 @@ namespace SceneBehaviours.Manager
         
         public void SaveAndExit()
         {
-            ManagerRuntimeData.ClearData();
+            runtimeDataForManager.Clear();
             sceneTransitionManager.LoadSceneByIndex(0);
         }
     }

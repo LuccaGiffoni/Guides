@@ -30,8 +30,8 @@ namespace PickPositions.General
                 popupService.SendMessageToUser("Não há nenhum PickPosition (ativo) para excluir." , EPopupType.Info);
                 return;
             }
-            
-            pickPositionCreator.pickPositionOnEditMode = null;
+
+            runtimeDataForManager.PickPositions.Remove(runtimeDataForManager.ActivePickPosition);
             
             var result = ManagerRuntimeData.RemoveActivePickPosition();
             if (result)

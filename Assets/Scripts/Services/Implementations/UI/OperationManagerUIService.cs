@@ -1,8 +1,7 @@
 ﻿using Data.Entities;
 using Data.Enums;
 using Data.Responses;
-using Data.Runtime;
-using Data.Settings;
+using Data.ScriptableObjects;
 using EventSystem;
 using Services.Interfaces;
 using StepButtons;
@@ -22,8 +21,8 @@ namespace Services.Implementations.UI
         [SerializeField] private TextMeshProUGUI operationNameText; 
         [SerializeField] private TextMeshProUGUI stepNumberText;
         
-        private StepList steps;
-        
+        [Header("Runtime Data"), SerializeField] private RuntimeDataForManager runtimeDataForManager;
+
         #region Listeners
 
         private void OnEnable()
@@ -42,39 +41,32 @@ namespace Services.Implementations.UI
 
         public void Init(Response<StepList> response)
         {
-            // CHANGE THIS LATER
-            ManagerRuntimeData.stepButtons.Clear();
-            Debug.Log("Creating buttons");
-            steps = response.data;
-            foreach (var step in steps.Steps)
+            runtimeDataForManager.StepButtons.Clear();
+
+            foreach (var step in runtimeDataForManager.Steps.Steps)
             {
                 var button = Instantiate(buttonPrefab, buttonParent);
                 var stepButton = button.GetComponentInChildren<StepButton>();
-                
-                stepButton.stepIndex = step.StepIndex;
-                stepButton.stepNumberText.text = step.StepIndex.ToString();
-
-                ManagerRuntimeData.stepButtons.Add(button);
+                stepButton.Init(step.StepIndex);
+                runtimeDataForManager.StepButtons.Add(button);
             }
 
-            operationNameText.text = Operation.Read(Application.persistentDataPath).Description;
-            descriptionText.text = steps.Steps[0].Description;
-            stepNumberText.text = $"Passo {steps.Steps[0].StepIndex.ToString()} de {steps.Steps.Count}";
+            operationNameText.text = runtimeDataForManager.Operation.Description;
+            descriptionText.text = runtimeDataForManager.Steps.Steps[0].Description;
+            stepNumberText.text = $"Passo {runtimeDataForManager.Steps.Steps[0].StepIndex.ToString()} de {runtimeDataForManager.Steps.Steps.Count}";
 
-            // CHANGE IT LATER TO READ THE CREATED PICK POSITIONS
-            stepNumberText.text += ManagerRuntimeData.ReturnActivePickPosition()
-                ? "\n" + ManagerRuntimeData.ReturnActivePickPosition().gameObject.name
+            stepNumberText.text += runtimeDataForManager.ActivePickPosition
+                ? "\n" + runtimeDataForManager.ActivePickPosition.gameObject.name
                 : "\nThere's no Active PickPosition...";
         }
         
         public void Refresh(Response<int> response)
         {
-            descriptionText.text = steps.Steps[response.data - 1].Description;
-            stepNumberText.text = $"Passo {steps.Steps[response.data - 1].StepIndex.ToString()} de {steps.Steps.Count}";
+            descriptionText.text = runtimeDataForManager.Steps.Steps[response.data - 1].Description;
+            stepNumberText.text = $"Passo {runtimeDataForManager.Steps.Steps[response.data - 1].StepIndex.ToString()} de {runtimeDataForManager.Steps.Steps.Count}";
 
-            // CHANGE IT LATER TO READ THE CREATED PICK POSITIONS
-            stepNumberText.text += ManagerRuntimeData.ReturnActivePickPosition()
-                ? "\n" + ManagerRuntimeData.ReturnActivePickPosition().gameObject.name
+            stepNumberText.text += runtimeDataForManager.ActivePickPosition
+                ? "\n" + runtimeDataForManager.ActivePickPosition.gameObject.name
                 : "\nThere's no Active PickPosition...";
         }
     }

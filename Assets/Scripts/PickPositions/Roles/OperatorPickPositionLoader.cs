@@ -1,5 +1,6 @@
 ﻿using Data.Enums;
 using Data.Runtime;
+using Data.ScriptableObjects;
 using Data.Settings;
 using KBCore.Refs;
 using Messages;
@@ -16,8 +17,8 @@ namespace PickPositions.Roles
         [SerializeField, Scene] private OperationOperatorBehaviour operationOperatorBehaviour;
         [FormerlySerializedAs("popupManager")] [SerializeField] private PopupService popupService;
         
-        [Header("Pick Positions")]
-        [SerializeField] private GameObject pickPositionPrefab;
+        [Header("Pick Positions"), SerializeField] private GameObject pickPositionPrefab;
+        [Header("Runtime Data"), SerializeField] private RuntimeDataForOperator runtimeDataForOperator;
 
         private void OnEnable() => operationOperatorBehaviour.onStepsReceived.AddListener(CreateAllSavedPickPositions);
 
@@ -39,7 +40,7 @@ namespace PickPositions.Roles
                     return;
                 }
                 
-                createdPickPosition.SetPickPosition(OperatorRuntimeData.selectedStep.StepIndex, scale, position, rotation);
+                createdPickPosition.SetPickPosition(OperatorRuntimeData.selectedStep.StepIndex, OperatorRuntimeData.selectedStep.StepID, scale, position, rotation);
                 OperatorRuntimeData.pickPositionsOnScene.Add(createdPickPosition);
             }
         }

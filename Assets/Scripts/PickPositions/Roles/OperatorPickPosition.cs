@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Data.Enums;
 using Data.Runtime;
 using Data.Settings;
@@ -16,6 +17,7 @@ namespace PickPositions.Roles
         
         [Header("Properties")]
         public int stepIndex { get; private set; }
+        public int stepId { get; private set; }
         public bool isSaved { get; set; }
         private bool isAlreadyTriggered { get; set; }
         
@@ -38,8 +40,13 @@ namespace PickPositions.Roles
         [SerializeField] private Material right;
 
         private const string HandTag = "Hands";
-        
-        public void SetPickPosition(int index, Vector3 scale, Vector3 position, Quaternion rotation)
+
+        // Do this at creation time
+        // Important!
+        // Refactor this code
+        private void Start() => operationOperatorBehaviour = FindFirstObjectByType<OperationOperatorBehaviour>();
+
+        public void SetPickPosition(int index, int stepId, Vector3 scale, Vector3 position, Quaternion rotation)
         {
             gameObject.transform.localPosition = position;
             gameObject.transform.rotation = rotation;
@@ -48,6 +55,7 @@ namespace PickPositions.Roles
             foreach (var text in facesText) text.text = stepIndex.ToString();
 
             stepIndex = index;
+            stepId = stepId;
             isSaved = false;
         }
         

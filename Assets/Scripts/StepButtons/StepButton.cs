@@ -1,11 +1,8 @@
 ﻿using Data.Enums;
 using Data.Responses;
-using Data.Runtime;
 using Data.ScriptableObjects;
-using Data.Settings;
 using EventSystem;
 using KBCore.Refs;
-using SceneBehaviours.Manager;
 using TMPro;
 using UnityEngine;
 
@@ -13,18 +10,21 @@ namespace StepButtons
 {
     public class StepButton : ValidatedMonoBehaviour
     {
-        [HideInInspector] public int stepIndex { get; set; }
+        private int index { get; set; }
         [SerializeField, Self] public TextMeshProUGUI stepNumberText;
         
-        [SerializeField, Scene] private OperationManagerBehaviour operationManagerBehaviour;
         [Header("Runtime Data"), SerializeField] private RuntimeDataForManager runtimeDataForManager;
 
-        private void Start() => operationManagerBehaviour = FindFirstObjectByType<OperationManagerBehaviour>();
-
+        public void Init(int stepIndex)
+        {
+            index = stepIndex;
+            stepNumberText.text = index.ToString();
+        }
+        
         public void MoveToThisStep()
         {
-            var response = Response<int>.Success(stepIndex);
-            runtimeDataForManager.Index = stepIndex; 
+            var response = Response<int>.Success(index);
+            runtimeDataForManager.Index = index; 
             
             EventManager.StepEvents.OnStepChanged.Get(EChannels.Step).Invoke(response);
         }

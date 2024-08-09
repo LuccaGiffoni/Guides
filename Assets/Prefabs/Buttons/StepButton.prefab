@@ -182,6 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stepNumberText: {fileID: 3981724320227326313}
   operationManagerBehaviour: {fileID: 0}
+  runtimeDataForManager: {fileID: 11400000, guid: 8d80446ef025159429d255e19c81b9b0, type: 2}
 --- !u!1 &6474502152365264269
 GameObject:
   m_ObjectHideFlags: 0
