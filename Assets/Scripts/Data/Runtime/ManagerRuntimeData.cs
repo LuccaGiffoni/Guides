@@ -10,7 +10,7 @@ namespace Data.Runtime
     {
         public static Operation selectedOperation { get; set; }
         public static Step selectedStep { get; set; }
-        public static StepList steps { get; private set; } = new();
+        public static StepList steps { get; set; } = new();
         public static OVRSpatialAnchor activeAnchor { get; set; }
         public static List<GameObject> stepButtons { get; set; } = new();
         public static List<ManagerPickPosition> pickPositionsOnScene { get; set; } = new();
@@ -31,9 +31,9 @@ namespace Data.Runtime
         public static ManagerPickPosition ReturnActivePickPosition()
         {
             var foundPickPosition = pickPositionsOnScene.Find(x =>
-                x.stepIndex == selectedStep.StepIndex);
+                x.stepIndex == index);
 
-            return foundPickPosition;
+            return foundPickPosition == null ? null : foundPickPosition;
         }
 
         public static bool RemoveActivePickPosition()

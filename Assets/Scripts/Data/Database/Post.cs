@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Data.Settings;
 using Messages;
@@ -60,16 +61,16 @@ namespace Data.Database
             {
                 WWWForm form = new();
                 form.AddField("stepId", stepId.ToString());
-                form.AddField("PX", pickPosition.localPosition.x.ToString("n4").Replace(",", "."));
-                form.AddField("PY", pickPosition.localPosition.y.ToString("n4").Replace(",", "."));
-                form.AddField("PZ", pickPosition.localPosition.z.ToString("n4").Replace(",", "."));
-                form.AddField("RX", pickPosition.localRotation.x.ToString("n4").Replace(",", "."));
-                form.AddField("RY", pickPosition.localRotation.y.ToString("n4").Replace(",", "."));
-                form.AddField("RZ", pickPosition.localRotation.z.ToString("n4").Replace(",", "."));
-                form.AddField("RW", pickPosition.localRotation.w.ToString("n4").Replace(",", "."));
-                form.AddField("SX", pickPosition.localScale.x.ToString("n4").Replace(",", "."));
-                form.AddField("SY", pickPosition.localScale.y.ToString("n4").Replace(",", "."));
-                form.AddField("SZ", pickPosition.localScale.z.ToString("n4").Replace(",", "."));
+                form.AddField("PX", pickPosition.localPosition.x.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
+                form.AddField("PY", pickPosition.localPosition.y.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
+                form.AddField("PZ", pickPosition.localPosition.z.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
+                form.AddField("RX", pickPosition.localRotation.x.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
+                form.AddField("RY", pickPosition.localRotation.y.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
+                form.AddField("RZ", pickPosition.localRotation.z.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
+                form.AddField("RW", pickPosition.localRotation.w.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
+                form.AddField("SX", pickPosition.localScale.x.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
+                form.AddField("SY", pickPosition.localScale.y.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
+                form.AddField("SZ", pickPosition.localScale.z.ToString(CultureInfo.InvariantCulture).Replace(",", "."));
                 
 
                 var updatePickPositionString = ConnectionSettings.apiUrl + "?action=update_step";
@@ -81,6 +82,7 @@ namespace Data.Database
             }
             catch (Exception e)
             {
+                Debug.Log(e.Message);
                 return e.Message;
             }
         }

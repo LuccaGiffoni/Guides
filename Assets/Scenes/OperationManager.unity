@@ -3204,6 +3204,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 822237479}
   m_CullTransparentMesh: 1
+--- !u!1 &832194542
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 832194543}
+  - component: {fileID: 832194544}
+  m_Layer: 0
+  m_Name: Loader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &832194543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832194542}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1642670534}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &832194544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832194542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2c5723f597846c8a797b3d3685a404a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  operationManagerBehaviour: {fileID: 833791096}
+  pickPositionCreator: {fileID: 922653773}
+  popupService: {fileID: 213387031}
+  pickPositionPrefab: {fileID: 5354188862167544933, guid: 8b0a33cfd65a32e4b87287a71fd9866b, type: 3}
+  runtimeDataForManager: {fileID: 11400000, guid: 8d80446ef025159429d255e19c81b9b0, type: 2}
 --- !u!1 &833791093
 GameObject:
   m_ObjectHideFlags: 0
@@ -3251,6 +3300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupService: {fileID: 213387031}
   sceneTransitionManager: {fileID: 1145937629}
+  runtimeDataForManager: {fileID: 11400000, guid: 8d80446ef025159429d255e19c81b9b0, type: 2}
 --- !u!114 &833791097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3268,6 +3318,7 @@ MonoBehaviour:
   anchorObjects:
   - {fileID: 641415491}
   defaultControllerMapper: {fileID: 891511719}
+  runtimeDataForManager: {fileID: 11400000, guid: 8d80446ef025159429d255e19c81b9b0, type: 2}
 --- !u!1 &840866666
 GameObject:
   m_ObjectHideFlags: 0
@@ -3734,7 +3785,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 891511720}
           m_TargetAssemblyTypeName: Helper.ButtonsMapperHelper, Assembly-CSharp
-          m_MethodName: HandleMappersVisibility
+          m_MethodName: HandleVisibility
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3831,7 +3882,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 922653768}
-  - component: {fileID: 922653770}
   - component: {fileID: 922653773}
   - component: {fileID: 922653772}
   - component: {fileID: 922653771}
@@ -3857,22 +3907,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1664750212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &922653770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922653766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2c5723f597846c8a797b3d3685a404a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  operationManagerBehaviour: {fileID: 833791096}
-  pickPositionCreator: {fileID: 922653773}
-  popupService: {fileID: 213387031}
-  pickPositionPrefab: {fileID: 5354188862167544933, guid: 8b0a33cfd65a32e4b87287a71fd9866b, type: 3}
 --- !u!114 &922653771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3887,6 +3921,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupService: {fileID: 213387031}
   pickPositionCreator: {fileID: 922653773}
+  runtimeDataForManager: {fileID: 11400000, guid: 8d80446ef025159429d255e19c81b9b0, type: 2}
 --- !u!114 &922653772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3926,6 +3961,7 @@ MonoBehaviour:
   deadZoneText: {fileID: 701948501}
   rotationSpeedText: {fileID: 2131979970}
   translationSpeedText: {fileID: 1475518003}
+  runtimeDataForManager: {fileID: 11400000, guid: 8d80446ef025159429d255e19c81b9b0, type: 2}
   pickPositionOnEditMode: {fileID: 0}
 --- !u!1 &953490032
 GameObject:
@@ -4365,9 +4401,10 @@ MonoBehaviour:
   anchorDatabase: {fileID: 999170625}
   popupService: {fileID: 213387031}
   operationManagerBehaviour: {fileID: 833791096}
-  managerPickPositionLoader: {fileID: 922653770}
+  managerPickPositionLoader: {fileID: 0}
   cameraRig: {fileID: 1310056275}
   anchorPrefab: {fileID: 789684486510353890, guid: fc5d6678f70f1d74a80851d642528940, type: 3}
+  runtimeDataForManager: {fileID: 11400000, guid: 8d80446ef025159429d255e19c81b9b0, type: 2}
 --- !u!114 &999170625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7051,6 +7088,7 @@ Transform:
   - {fileID: 1560753947}
   - {fileID: 1145937630}
   - {fileID: 131696234}
+  - {fileID: 832194543}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1664750211

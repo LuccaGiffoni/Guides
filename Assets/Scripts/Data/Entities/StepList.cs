@@ -6,7 +6,7 @@ namespace Data.Entities
 {
     public class StepList
     {
-        public List<Step> Steps { get; set; }
+        public List<Step> Steps { get; set; } = new();
         
         public void Save(string persistentDataPath)
         {
