@@ -1,5 +1,4 @@
 ﻿using Data.Runtime;
-using Data.Settings;
 using KBCore.Refs;
 using SceneBehaviours.Operator;
 using UnityEngine;

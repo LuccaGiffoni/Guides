@@ -1,7 +1,6 @@
 ﻿using KBCore.Refs;
 using Meta.XR.BuildingBlocks;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Anchor
 {

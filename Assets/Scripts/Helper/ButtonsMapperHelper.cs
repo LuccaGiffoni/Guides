@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Data.Enums;
 using Data.Responses;
-using Data.Runtime;
+using Data.ScriptableObjects;
 using EventSystem;
 using KBCore.Refs;
 using Meta.XR.BuildingBlocks;
@@ -19,6 +19,8 @@ namespace Helper
         [SerializeField, Tooltip("List for all the mappers for the Pick Position's features.")] private List<GameObject> pickPositionMapper = new();
         [SerializeField, Tooltip("List for all the mappers for default features.")] private List<GameObject> defaultMapper = new();
 
+        [Header("Runtime Data"), SerializeField] private RuntimeDataForManager runtimeDataForManager;
+
         private bool isMapperVisible;
         
         private void OnEnable() => EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).AddListener(HandleMappersVisibility);
@@ -26,7 +28,7 @@ namespace Helper
 
         public void HandleVisibility()
         {
-            switch (ManagerRuntimeData.currentCreativeMode)
+            switch (runtimeDataForManager.CreativeMode)
             {
                 case EManagerState.None:
                     ChangeVisibilityBasedOnActualVisibility(defaultMapper);

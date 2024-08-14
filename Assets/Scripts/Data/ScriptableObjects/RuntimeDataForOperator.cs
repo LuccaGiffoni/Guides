@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Data.ScriptableObjects
 {        
     [CreateAssetMenu(fileName = "RuntimeDataForOperator", menuName = "ScriptableObjects/RuntimeDataForOperator", order = 2)]
-    public class RuntimeDataForOperator
+    public class RuntimeDataForOperator : ScriptableObject
     {
         public Operation Operation;
         public StepList Steps = new();

@@ -11,7 +11,6 @@ namespace PickPositions.Roles
         [Header("References")]
         [SerializeField] private OperationManagerBehaviour operationManagerBehaviour;
         
-        [Header("Properties")]
         public int stepId { get; set; }
         public int stepIndex { get; private set; }
         public bool isSaved { get; set; }

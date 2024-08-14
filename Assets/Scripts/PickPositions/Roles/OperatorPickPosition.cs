@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Data.Enums;
 using Data.Runtime;
-using Data.Settings;
 using KBCore.Refs;
 using SceneBehaviours.Operator;
 using TMPro;
@@ -15,7 +13,6 @@ namespace PickPositions.Roles
         [Header("References")]
         [SerializeField, Scene] private OperationOperatorBehaviour operationOperatorBehaviour;
         
-        [Header("Properties")]
         public int stepIndex { get; private set; }
         public int stepId { get; private set; }
         public bool isSaved { get; set; }
@@ -46,7 +43,7 @@ namespace PickPositions.Roles
         // Refactor this code
         private void Start() => operationOperatorBehaviour = FindFirstObjectByType<OperationOperatorBehaviour>();
 
-        public void SetPickPosition(int index, int stepId, Vector3 scale, Vector3 position, Quaternion rotation)
+        public void SetPickPosition(int index, int id, Vector3 scale, Vector3 position, Quaternion rotation)
         {
             gameObject.transform.localPosition = position;
             gameObject.transform.rotation = rotation;
@@ -55,7 +52,7 @@ namespace PickPositions.Roles
             foreach (var text in facesText) text.text = stepIndex.ToString();
 
             stepIndex = index;
-            stepId = stepId;
+            stepId = id;
             isSaved = false;
         }
         

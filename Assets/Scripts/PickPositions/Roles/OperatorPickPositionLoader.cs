@@ -1,7 +1,6 @@
 ﻿using Data.Enums;
 using Data.Runtime;
 using Data.ScriptableObjects;
-using Data.Settings;
 using KBCore.Refs;
 using Messages;
 using SceneBehaviours.Operator;

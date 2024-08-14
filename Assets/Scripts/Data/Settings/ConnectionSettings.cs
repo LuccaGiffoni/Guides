@@ -4,7 +4,7 @@ namespace Data.Settings
 {
     public static class ConnectionSettings
     {
-        public static string apiUrl { get; private set; }
+        public static string apiUrl { get; private set; } = $"http://192.168.15.13/api/api.php";
         public const string ServerPrefs = "Server";
 
         public static string ConfigureAPIUrl()

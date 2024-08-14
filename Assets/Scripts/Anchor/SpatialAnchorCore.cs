@@ -5,18 +5,14 @@ using Data.Enums;
 using Data.Responses;
 using Data.Runtime;
 using Data.ScriptableObjects;
-using Data.Settings;
 using EventSystem;
-using Helper;
 using KBCore.Refs;
 using Messages;
 using Meta.XR.BuildingBlocks;
-using PickPositions;
 using PickPositions.Roles;
 using SceneBehaviours.Manager;
 using Services.Implementations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Anchor
 {
@@ -64,7 +60,11 @@ namespace Anchor
             Debug.Log(runtimeDataForManager.Operation.AnchorUuid.ToString());
 
             if (runtimeDataForManager.Operation.AnchorUuid != Guid.Empty) LoadSavedSpatialAnchorToScene();
-            else popupService.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, EPopupType.Warning);
+            else
+            {
+                popupService.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, EPopupType.Warning);
+                EventManager.AnchorEvents.OnAnchorLoaded.Get(EChannels.Anchor).Invoke(Response<OVRSpatialAnchor>.Failure("Not found on database!"));
+            }
         }
         
         // Event Responses
@@ -89,7 +89,8 @@ namespace Anchor
             runtimeDataForManager.OVRSpatialAnchor = anchor;
             runtimeDataForManager.SpatialAnchor = anchor.GetComponent<SpatialAnchor>();
             
-            runtimeDataForManager.SpatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorNotSavedYet, ManagerRuntimeData.activeAnchor.Uuid.ToString());
+            runtimeDataForManager.SpatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorNotSavedYet, anchor.Uuid.ToString());
+            Debug.Log("Anchor set on ScriptableObject!");
             
             anchors.Add(anchor);
         }
@@ -123,7 +124,7 @@ namespace Anchor
             }
         }
         
-        private async void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> foundAnchors)
+        private void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> foundAnchors)
         {
             // Set anchor
             runtimeDataForManager.OVRSpatialAnchor = foundAnchors[0];

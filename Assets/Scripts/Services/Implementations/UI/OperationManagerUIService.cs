@@ -41,6 +41,8 @@ namespace Services.Implementations.UI
 
         public void Init(Response<StepList> response)
         {
+            if (buttonParent.childCount > 0) return;
+            
             runtimeDataForManager.StepButtons.Clear();
 
             foreach (var step in runtimeDataForManager.Steps.Steps)
