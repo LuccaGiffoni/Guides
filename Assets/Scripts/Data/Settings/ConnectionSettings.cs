@@ -9,6 +9,9 @@ namespace Data.Settings
 
         public static string ConfigureAPIUrl()
         {
+            #if UNITY_EDITOR
+            return apiUrl;
+            #endif
             apiUrl = $"http://" + PlayerPrefs.GetString(ServerPrefs) + "/api/api.php";
             return apiUrl;
         }

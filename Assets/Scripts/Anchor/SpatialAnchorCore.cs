@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Data.Entities;
 using Data.Enums;
 using Data.Responses;
-using Data.Runtime;
 using Data.ScriptableObjects;
 using EventSystem;
 using KBCore.Refs;
@@ -57,7 +56,6 @@ namespace Anchor
         {
             runtimeDataForManager.Clear();
             runtimeDataForManager.Operation = Operation.Read(Application.persistentDataPath);
-            Debug.Log(runtimeDataForManager.Operation.AnchorUuid.ToString());
 
             if (runtimeDataForManager.Operation.AnchorUuid != Guid.Empty) LoadSavedSpatialAnchorToScene();
             else
@@ -98,13 +96,12 @@ namespace Anchor
         private void DeleteUnsavedSpatialAnchorsFromMemory()
         {
             foreach (var anchor in anchors) anchorCore.EraseAnchorByUuid(anchor.Uuid);
-            
             anchors.Clear();
         }
 
         public async void DeleteSavedAnchorFromMemoryAndDatabase()
         {
-            if (runtimeDataForManager.OVRSpatialAnchor != null)
+            if (runtimeDataForManager.OVRSpatialAnchor != null && runtimeDataForManager.SpatialAnchor != null)
             {
                 await anchorDatabase.ClearSpatialAnchorFromDatabase();
                 anchorCore.EraseAnchorByUuid(runtimeDataForManager.OVRSpatialAnchor.Uuid);

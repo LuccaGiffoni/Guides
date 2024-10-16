@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Anchor;
 using Data.Entities;
 using Data.Enums;
@@ -17,10 +16,8 @@ namespace Data.ScriptableObjects
         public List<GameObject> StepButtons = new();
         public OVRSpatialAnchor OVRSpatialAnchor;
         public SpatialAnchor SpatialAnchor;
-        public EManagerState CreativeMode = EManagerState.None;
-        public int Index = 1;
-    
-        public OperatorPickPosition ActivePickPosition => PickPositions.FirstOrDefault(x => x.stepId == Steps.Steps[Index - 1].StepID);
+        public int Index = 0;
+
         public Step ActiveStep => Steps.Steps[Index];
 
         public void Clear()
@@ -31,8 +28,28 @@ namespace Data.ScriptableObjects
             StepButtons?.Clear();
             OVRSpatialAnchor = null;
             SpatialAnchor = null;
-            CreativeMode = EManagerState.None;
             Index = 1;
+        }
+        
+        public void UpdateCubes()
+        {
+            foreach (var pick in PickPositions)
+            {
+                pick.SetInteractionState(EInteractionState.Normal);
+            }
+        }
+        
+        public void SetCubes()
+        {
+            foreach (var pick in PickPositions)
+            {
+                pick.SetInteractionState(EInteractionState.Normal);
+
+                if (pick.stepIndex - 1 == Index)
+                {
+                    pick.SetInteractionState(EInteractionState.Target);
+                }
+            }
         }
     }
 }

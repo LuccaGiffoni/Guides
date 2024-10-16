@@ -15,7 +15,6 @@ namespace SceneBehaviours.Manager
 {
     public class OperationManagerBehaviour : ValidatedMonoBehaviour
     {
-        [FormerlySerializedAs("popupManager")]
         [Header("References")]
         [SerializeField, Scene] private PopupService popupService;
         [SerializeField, Scene] private SceneTransitionManager sceneTransitionManager;

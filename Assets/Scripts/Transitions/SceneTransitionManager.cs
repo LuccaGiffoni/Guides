@@ -35,5 +35,10 @@ namespace Transitions
 
             operation.allowSceneActivation = true;
         }
+
+        public void Quit()
+        {
+            Application.Quit();
+        }
     }
 }

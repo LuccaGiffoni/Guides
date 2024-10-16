@@ -15,11 +15,5 @@ namespace StepButtons
         {
             operationOperatorBehaviour = FindFirstObjectByType<OperationOperatorBehaviour>();
         }
-
-        public void MoveToStep()
-        {
-            ManagerRuntimeData.selectedStep = ManagerRuntimeData.steps.Steps[stepButton.stepIndex - 1];
-            operationOperatorBehaviour.UpdatePanelInformation();
-        }
     }
 }

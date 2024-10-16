@@ -1,44 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using Data.Entities;
 using Data.Enums;
-using Data.Runtime;
+using Data.ScriptableObjects;
 using KBCore.Refs;
 using Messages;
 using Meta.XR.BuildingBlocks;
 using SceneBehaviours.Operator;
 using Services.Implementations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Anchor
 {
     public class OperatorSpatialAnchorCore : ValidatedMonoBehaviour
     {
+        #region Properties
+
         [Header("References")]
         [SerializeField, Self] private SpatialAnchorCoreBuildingBlock anchorCore;
-        [FormerlySerializedAs("popupManager")] [SerializeField, Scene] private PopupService popupService;
+        [SerializeField, Scene] private PopupService popupService;
         [SerializeField] private OperationOperatorBehaviour operationOperatorBehaviour;
         
-        [Header("Anchor")]
-        [SerializeField, Tooltip("This prefab will get instantiated every time the user creates a new SpatialAnchor")] public GameObject anchorPrefab;
+        [Header("Anchor"), SerializeField, Tooltip("This prefab will get instantiated every time the user creates a new SpatialAnchor")]
+        public GameObject anchorPrefab;
 
-        private readonly List<OVRSpatialAnchor> _anchors = new();
+        [Header("Scriptable Object"), SerializeField] private RuntimeDataForOperator runtimeDataForOperator;
 
-        private void Start() => LoadSavedSpatialAnchorToOperatorScene();
+        #endregion
 
+        #region Events
+        
         private void OnEnable() => anchorCore.OnAnchorsLoadCompleted.AddListener(HandleAnchorLoadCompleted);
         private void OnDisable() => anchorCore.OnAnchorsLoadCompleted.RemoveListener(HandleAnchorLoadCompleted);
+        
+        #endregion
+
+        private void Start()
+        {
+            runtimeDataForOperator.Clear();
+            runtimeDataForOperator.Operation = Operation.Read(Application.persistentDataPath);
+            
+            // Start process
+            LoadSavedSpatialAnchorToOperatorScene();
+        }
 
         private void LoadSavedSpatialAnchorToOperatorScene()
         {
-            if(OperatorRuntimeData.selectedOperation.AnchorUuid == Guid.Empty)
+            if(runtimeDataForOperator.Operation.AnchorUuid == Guid.Empty)
             {
                 popupService.SendMessageToUser(AnchorLogMessages.anchorNotFoundOnDatabase, EPopupType.Warning);
                 return;
             }
 
-            Debug.Log(OperatorRuntimeData.selectedOperation.AnchorUuid.ToString());
-            var guids = new List<Guid> { OperatorRuntimeData.selectedOperation.AnchorUuid };
+            var guids = new List<Guid> { runtimeDataForOperator.Operation.AnchorUuid };
             
             popupService.SendMessageToUser(AnchorLogMessages.tryingToFindAnchor, EPopupType.Info);
             anchorCore.LoadAndInstantiateAnchors(anchorPrefab, guids);
@@ -46,13 +60,16 @@ namespace Anchor
         
         private async void HandleAnchorLoadCompleted(List<OVRSpatialAnchor> anchors)
         {
-            if(anchors.Count == 0){ Debug.Log("No anchor found");
+            if(anchors.Count == 0)
+            {
+                Debug.Log("No anchor found");
                 return;
             }
-            OperatorRuntimeData.activeAnchor = anchors[0];
-            var spatialAnchor = OperatorRuntimeData.activeAnchor.GetComponent<SpatialAnchor>();
+            
+            runtimeDataForOperator.OVRSpatialAnchor = anchors[0];
+            runtimeDataForOperator.SpatialAnchor = runtimeDataForOperator.OVRSpatialAnchor.GetComponent<SpatialAnchor>();
 
-            spatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorLocalized, OperatorRuntimeData.activeAnchor.Uuid.ToString());
+            runtimeDataForOperator.SpatialAnchor.SetSpatialAnchorData(AnchorLogMessages.anchorLocalized, runtimeDataForOperator.OVRSpatialAnchor.Uuid.ToString());
             
             await operationOperatorBehaviour.GetStepsForOperation();
         }

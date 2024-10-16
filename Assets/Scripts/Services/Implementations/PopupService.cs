@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Data.Enums;
+using Helper;
 using Services.Interfaces;
 using TMPro;
 using UnityEngine;
@@ -30,6 +31,9 @@ namespace Services.Implementations
             text.text = message;
             popupCanvas.SetActive(true);
 
+            if (type == EPopupType.Error)
+                OutputManager.AppendLineToFile(message);
+            
             StartCoroutine(HidePopupAfterSeconds(popupDuration));
         }
 

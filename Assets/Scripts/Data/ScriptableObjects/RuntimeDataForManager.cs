@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Anchor;
 using Data.Entities;
@@ -19,6 +20,8 @@ namespace Data.ScriptableObjects
         public SpatialAnchor SpatialAnchor;
         public EManagerState CreativeMode = EManagerState.None;
         public int Index = 1;
+
+        public Guid SessionId { get; set; }
         
         public ManagerPickPosition ActivePickPosition => PickPositions.FirstOrDefault(x => x.stepId == Steps.Steps[Index - 1].StepID);
         public Step ActiveStep => Steps.Steps[Index];

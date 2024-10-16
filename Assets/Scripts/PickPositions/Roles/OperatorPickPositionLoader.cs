@@ -1,5 +1,4 @@
 ﻿using Data.Enums;
-using Data.Runtime;
 using Data.ScriptableObjects;
 using KBCore.Refs;
 using Messages;
@@ -12,6 +11,8 @@ namespace PickPositions.Roles
 {
     public class OperatorPickPositionLoader : ValidatedMonoBehaviour
     {
+        #region Properties
+        
         [Header("References")]
         [SerializeField, Scene] private OperationOperatorBehaviour operationOperatorBehaviour;
         [FormerlySerializedAs("popupManager")] [SerializeField] private PopupService popupService;
@@ -19,31 +20,37 @@ namespace PickPositions.Roles
         [Header("Pick Positions"), SerializeField] private GameObject pickPositionPrefab;
         [Header("Runtime Data"), SerializeField] private RuntimeDataForOperator runtimeDataForOperator;
 
+        #endregion
+        
+        #region Events
+        
         private void OnEnable() => operationOperatorBehaviour.onStepsReceived.AddListener(CreateAllSavedPickPositions);
+        private void OnDisable() => operationOperatorBehaviour.onStepsReceived.RemoveListener(CreateAllSavedPickPositions);
 
+        #endregion
+        
         private void CreateAllSavedPickPositions()
         {
-            foreach (var step in OperatorRuntimeData.steps.Steps)
+            foreach (var step in runtimeDataForOperator.Steps.Steps)
             {
                 if (step.SX == 0 || step.SY == 0 || step.SZ == 0) return;
                 
                 var position = new Vector3(step.PX, step.PY , step.PZ);
-                var rotation = Quaternion.Euler(step.RX, step.RY, step.RZ);
+                var rotation = new Quaternion(step.RX, step.RY, step.RZ, step.RW);
                 var scale = new Vector3(step.SX, step.SY, step.SZ);
             
                 var isPickPositionValid = Instantiate(pickPositionPrefab, position, Quaternion.identity,
-                    OperatorRuntimeData.activeAnchor.transform).TryGetComponent(out OperatorPickPosition createdPickPosition);
+                    runtimeDataForOperator.OVRSpatialAnchor.transform).TryGetComponent(out OperatorPickPosition createdPickPosition);
+                
                 if (!isPickPositionValid)
                 {
                     popupService.SendMessageToUser(PickPositionLogMessages.pickPositionAlreadyCreatedOrLoaded, EPopupType.Warning);
                     return;
                 }
                 
-                createdPickPosition.SetPickPosition(OperatorRuntimeData.selectedStep.StepIndex, OperatorRuntimeData.selectedStep.StepID, scale, position, rotation);
-                OperatorRuntimeData.pickPositionsOnScene.Add(createdPickPosition);
+                createdPickPosition.SetPickPosition(step.StepIndex, runtimeDataForOperator.ActiveStep.StepID, scale, position, rotation);
+                runtimeDataForOperator.PickPositions.Add(createdPickPosition);
             }
         }
-        
-        private void OnDisable() => operationOperatorBehaviour.onStepsReceived.RemoveListener(CreateAllSavedPickPositions);
     }
 }

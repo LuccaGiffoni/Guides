@@ -23,5 +23,8 @@
         public float SX;
         public float SY;
         public float SZ;
+
+        [System.NonSerialized] public int Errors = 0;
+        [System.NonSerialized] public int Success = 0;
     }
 }

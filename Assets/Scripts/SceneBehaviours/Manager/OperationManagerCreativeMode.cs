@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Anchor;
 using Data.Enums;
 using Data.Responses;
 using Data.ScriptableObjects;
@@ -15,7 +16,8 @@ namespace SceneBehaviours.Manager
         [SerializeField] private List<GameObject> anchorObjects;
         [SerializeField] private ControllerButtonsMapper defaultControllerMapper;
 
-        [FormerlySerializedAs("runtimeData")] [SerializeField] private RuntimeDataForManager runtimeDataForManager;
+        [SerializeField] private RuntimeDataForManager runtimeDataForManager;
+        [SerializeField] private SpatialAnchorSpawner anchorSpawner;
     
         public void SetCreativeModeForAnchor()
         {
@@ -24,9 +26,10 @@ namespace SceneBehaviours.Manager
             defaultControllerMapper.enabled = false;
 
             var response = Response<EManagerState>.Success(EManagerState.Anchor);
-            EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).Invoke(response);
+            anchorSpawner.SetAnchorVisibility(true);
             
             runtimeDataForManager.CreativeMode = EManagerState.Anchor;
+            EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).Invoke(response);
         }
 
         public void SetCreativeModeForPickPosition()
@@ -36,9 +39,10 @@ namespace SceneBehaviours.Manager
             defaultControllerMapper.enabled = false;
 
             var response = Response<EManagerState>.Success(EManagerState.PickPosition);
-            EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).Invoke(response);
-            
+            anchorSpawner.SetAnchorVisibility(false);
+
             runtimeDataForManager.CreativeMode = EManagerState.PickPosition;
+            EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).Invoke(response);
         }
 
         public void SetNoneCreativeMode()
@@ -48,9 +52,10 @@ namespace SceneBehaviours.Manager
             defaultControllerMapper.enabled = true;
             
             var response = Response<EManagerState>.Success(EManagerState.None);
-            EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).Invoke(response);
-            
+            anchorSpawner.SetAnchorVisibility(false);
+
             runtimeDataForManager.CreativeMode = EManagerState.None;
+            EventManager.StepEvents.OnCreativeModeChanged.Get(EChannels.Step).Invoke(response);
         }
     }
 }

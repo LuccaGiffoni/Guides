@@ -60,6 +60,8 @@ namespace Anchor
             AnchorPrefab = _anchorOnHand;
             FollowHand = _followHand;
         }
+
+        public void SetAnchorVisibility(bool isAnchorVisible) => _anchorPrefab.SetActive(isAnchorVisible);
         
         public void SpawnSpatialAnchor()
         {

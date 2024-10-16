@@ -1,6 +1,5 @@
 ﻿using Data.Database;
 using Data.Enums;
-using Data.Runtime;
 using Data.ScriptableObjects;
 using KBCore.Refs;
 using Messages;
@@ -12,35 +11,34 @@ namespace PickPositions.General
 {
     public class PickPositionManager : ValidatedMonoBehaviour
     {
-        [FormerlySerializedAs("popupManager")] [Header("References"), SerializeField] private PopupService popupService;
-        [Header("References"), SerializeField] private PickPositionCreator pickPositionCreator;
-
-        [Header("Runtime Data"), SerializeField] private RuntimeDataForManager runtimeDataForManager;
+        [Header("References")]
+        [SerializeField] private PopupService popupService;
+        [SerializeField] private PickPositionCreator pickPositionCreator;
+        
+        [Header("Runtime Data")]
+        [SerializeField] private RuntimeDataForManager runtimeDataForManager;
+        
+        private bool isSaving = false;
 
         public async void DeleteActivePickPosition()
         {
-            var activePickPosition = ManagerRuntimeData.ReturnActivePickPosition();
-            
-            if(activePickPosition)
-                Destroy(activePickPosition.gameObject);
+            if(runtimeDataForManager.ActivePickPosition)
+                Destroy(runtimeDataForManager.ActivePickPosition.gameObject);
             else
             {
                 popupService.SendMessageToUser("Não há nenhum PickPosition (ativo) para excluir." , EPopupType.Info);
                 return;
             }
 
-            runtimeDataForManager.PickPositions.Remove(runtimeDataForManager.ActivePickPosition);
+            var result = runtimeDataForManager.PickPositions.Remove(runtimeDataForManager.ActivePickPosition);
             
-            var result = ManagerRuntimeData.RemoveActivePickPosition();
             if (result)
             {
                 popupService.SendMessageToUser(PickPositionLogMessages.activePickPositionRemoved, EPopupType.Info);
-                await Post.ClearPickPositionFromDatabase(activePickPosition.stepId);
+                await Post.ClearPickPositionFromDatabase(runtimeDataForManager.ActivePickPosition.stepId);
             }
             else popupService.SendMessageToUser(PickPositionLogMessages.activePickPositionNotRemoved, EPopupType.Error);
         }
-
-        private bool isSaving = false;
         
         public async void SaveActivePickPosition()
         {

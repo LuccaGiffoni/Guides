@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using Data.Enums;
-using Data.Runtime;
+using Data.ScriptableObjects;
 using KBCore.Refs;
 using SceneBehaviours.Operator;
+using StepButtons;
 using TMPro;
 using UnityEngine;
 
@@ -12,8 +13,8 @@ namespace PickPositions.Roles
     {
         [Header("References")]
         [SerializeField, Scene] private OperationOperatorBehaviour operationOperatorBehaviour;
-        
-        public int stepIndex { get; private set; }
+
+        public int stepIndex { get; private set; } = 0;
         public int stepId { get; private set; }
         public bool isSaved { get; set; }
         private bool isAlreadyTriggered { get; set; }
@@ -28,50 +29,61 @@ namespace PickPositions.Roles
         
         [Header("User Interface")]
         [SerializeField, Self, Tooltip("Pick Position's instance's renderer")] private Renderer rend;
-        [SerializeField, Tooltip("All the TextMeshProUGUI that display OperatorPickPosition's index")] private List<TextMeshProUGUI> facesText = new();
 
         [Header("Materials")]
         [SerializeField] private Material normal;
         [SerializeField] private Material target;
         [SerializeField] private Material wrong;
         [SerializeField] private Material right;
+        
+        [Header("Runtime Data"), SerializeField] private RuntimeDataForOperator runtimeDataForOperator;
 
+        private Outline _outline;
         private const string HandTag = "Hands";
 
-        // Do this at creation time
-        // Important!
-        // Refactor this code
-        private void Start() => operationOperatorBehaviour = FindFirstObjectByType<OperationOperatorBehaviour>();
+        private void Start()
+        {
+            operationOperatorBehaviour = FindFirstObjectByType<OperationOperatorBehaviour>();
+            runtimeDataForOperator = Resources.Load<RuntimeDataForOperator>("RuntimeDataOps");
+
+            _outline = gameObject.GetComponent<Outline>();
+            
+            SetInteractionState((runtimeDataForOperator.Index + 1) == stepIndex
+                ? EInteractionState.Target
+                : EInteractionState.Normal);
+        }
 
         public void SetPickPosition(int index, int id, Vector3 scale, Vector3 position, Quaternion rotation)
         {
             gameObject.transform.localPosition = position;
-            gameObject.transform.rotation = rotation;
+            gameObject.transform.localRotation = rotation;
             gameObject.transform.localScale = scale;
             
-            foreach (var text in facesText) text.text = stepIndex.ToString();
-
             stepIndex = index;
             stepId = id;
             isSaved = false;
         }
         
-        private void SetInteractionState(EInteractionState eInteractionState)
+        public void SetInteractionState(EInteractionState eInteractionState)
         {
             switch (eInteractionState)
             {
                 case EInteractionState.Normal:
                     rend.material = normal;
+                    _outline.OutlineColor = Color.grey;
                     break;
                 case EInteractionState.Target:
                     rend.material = target;
+                    _outline.OutlineColor = Color.blue;
                     break;
                 case EInteractionState.Right:
                     rend.material = right;
+                    _outline.OutlineColor = Color.green;
                     SetAudio(success, false);
                     break;
                 case EInteractionState.Wrong:
                     rend.material = wrong;
+                    _outline.OutlineColor = Color.red;
                     SetAudio(error, true);
                     break;
                 default:
@@ -91,17 +103,24 @@ namespace PickPositions.Roles
         {
             if (!other.gameObject.CompareTag(HandTag)) return;
 
-            if (OperatorRuntimeData.selectedStep.StepIndex == stepIndex)
+            if (runtimeDataForOperator.ActiveStep.StepIndex == stepIndex)
             {
                 SetInteractionState(EInteractionState.Right);
-
+                
                 if (isAlreadyTriggered) return;
-                operationOperatorBehaviour.UnlockNextButton();
+
+                operationOperatorBehaviour.UnlockNextButton(stepIndex);
                 isAlreadyTriggered = true;
+                
+                // Add right
+                runtimeDataForOperator.Steps.Steps[stepIndex].Success++;
             }
             else
             {
                 SetInteractionState(EInteractionState.Wrong);
+
+                // Add wrong
+                runtimeDataForOperator.Steps.Steps[stepIndex].Errors++;
             }
         }
         
@@ -109,9 +128,11 @@ namespace PickPositions.Roles
         {
             if (!other.gameObject.CompareTag(HandTag)) return;
 
-            SetInteractionState(OperatorRuntimeData.selectedStep.StepIndex == stepIndex
+            SetInteractionState(runtimeDataForOperator.ActiveStep.StepIndex == stepIndex
                 ? EInteractionState.Target
                 : EInteractionState.Normal);
+            
+            audioSource.Stop();
         }
     }
 }

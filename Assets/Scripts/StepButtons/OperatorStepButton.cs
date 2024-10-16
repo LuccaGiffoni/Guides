@@ -11,12 +11,7 @@ namespace StepButtons
         [SerializeField, Self] public TextMeshProUGUI stepNumberText;
         [SerializeField, Scene] private OperationOperatorBehaviour operationOperatorBehaviour;
 
-        private void Start()
-        {
-            operationOperatorBehaviour = FindFirstObjectByType<OperationOperatorBehaviour>();
-            
-            if(operationOperatorBehaviour != null) Debug.Log(operationOperatorBehaviour.gameObject.name);
-        }
+        private void Start() => operationOperatorBehaviour = FindFirstObjectByType<OperationOperatorBehaviour>();
 
         public void MoveToThisStep() => operationOperatorBehaviour.MoveToStep(stepIndex);
     }

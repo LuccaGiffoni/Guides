@@ -118,6 +118,29 @@ namespace Data.Database
             }
         }
         
+        [Tooltip("Add Errors and Success to the database.")]
+        public static async Task<string> AddOperatorMetrics(int stepId, int errors, int success)
+        {
+            try
+            {
+                WWWForm form = new();
+                form.AddField("stepId", stepId.ToString());
+                form.AddField("Errors", errors);
+                form.AddField("Success", success);
+
+                var updatePickPositionString = ConnectionSettings.apiUrl + "?action=update_step";
+                using var uwr = UnityWebRequest.Post(updatePickPositionString, form);
+                uwr.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                await SendWebRequestAsync(uwr);
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+        
         private static Task SendWebRequestAsync(UnityWebRequest uwr)
         {
             var tcs = new TaskCompletionSource<bool>();
