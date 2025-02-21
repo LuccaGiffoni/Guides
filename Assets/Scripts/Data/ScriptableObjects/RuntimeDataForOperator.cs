@@ -34,9 +34,7 @@ namespace Data.ScriptableObjects
         public void UpdateCubes()
         {
             foreach (var pick in PickPositions)
-            {
                 pick.SetInteractionState(EInteractionState.Normal);
-            }
         }
         
         public void SetCubes()
@@ -45,10 +43,8 @@ namespace Data.ScriptableObjects
             {
                 pick.SetInteractionState(EInteractionState.Normal);
 
-                if (pick.stepIndex - 1 == Index)
-                {
+                if (pick.StepIndex - 1 == Index)
                     pick.SetInteractionState(EInteractionState.Target);
-                }
             }
         }
     }

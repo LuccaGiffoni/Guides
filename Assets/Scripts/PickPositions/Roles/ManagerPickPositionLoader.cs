@@ -33,23 +33,28 @@ namespace PickPositions.Roles
         
         private void CreateAllSavedPickPositions(Response<StepList> response)
         {
-            if (!response.isSuccess || runtimeDataForManager.OVRSpatialAnchor == null) return;
+            if (!response.isSuccess || runtimeDataForManager.OVRSpatialAnchor == null)
+                return;
             
             foreach (var step in response.data.Steps)
             {
-                if (step.SX == 0 || step.SY == 0 || step.SZ == 0) continue;
+                if (step.SX == 0 || step.SY == 0 || step.SZ == 0)
+                    return;
 
                 var position = new Vector3(step.PX, step.PY , step.PZ);
                 var rotation = new Quaternion(step.RX, step.RY, step.RZ, step.RW);
                 var scale = new Vector3(step.SX, step.SY, step.SZ);
-                
+
+                if (!step.CopyHologramFromStep.HasValue)
+                    continue;
+                    
                 var isPickPositionValid = Instantiate(pickPositionPrefab, position, rotation, runtimeDataForManager.OVRSpatialAnchor.transform)
                     .TryGetComponent(out ManagerPickPosition createdPickPosition);
                 
                 if (!isPickPositionValid)
                 {
                     popupService.SendMessageToUser(PickPositionLogMessages.pickPositionAlreadyCreatedOrLoaded, EPopupType.Warning);
-                    continue;
+                    return;
                 }
 
                 createdPickPosition.name = $"Step {step.StepIndex}";

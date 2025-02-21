@@ -1,8 +1,10 @@
+using System;
 using Data.Runtime;
 using KBCore.Refs;
 using TMPro;
 using Transitions;
 using UnityEngine;
+using Utils;
 
 namespace Data.Entities
 {
@@ -26,8 +28,18 @@ namespace Data.Entities
 
         public void SelectOperation()
         {
-            OperatorRuntimeData.SaveOperation(operation);
-            sceneTransitionManager.AutomaticallyLoadNextScene();
+            try
+            {
+                OperatorRuntimeData.SaveOperation(operation);
+                var response = operation.Save(Application.persistentDataPath, OperationType.Operator);
+
+                if (response.Success)
+                    sceneTransitionManager.AutomaticallyLoadNextScene();
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+            }
         }
     }
 }

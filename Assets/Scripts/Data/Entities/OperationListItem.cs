@@ -26,7 +26,7 @@ namespace Data.Entities
         public void SelectOperation()
         {
             // Save to local directory
-            operation.Save(Application.persistentDataPath);
+            operation.Save(Application.persistentDataPath, OperationType.Manager);
             
             // Load next scene
             sceneTransitionManager.AutomaticallyLoadNextScene();

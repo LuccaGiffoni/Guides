@@ -38,7 +38,7 @@ namespace Anchor
         private void Start()
         {
             runtimeDataForOperator.Clear();
-            runtimeDataForOperator.Operation = Operation.Read(Application.persistentDataPath);
+            runtimeDataForOperator.Operation = Operation.Read(Application.persistentDataPath, OperationType.Operator).Data;
             
             // Start process
             LoadSavedSpatialAnchorToOperatorScene();

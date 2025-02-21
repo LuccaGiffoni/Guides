@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Data.Database;
+using Data.Entities;
 using Data.ScriptableObjects;
 using KBCore.Refs;
 using PickPositions.Roles;
@@ -10,7 +11,6 @@ using Transitions;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace SceneBehaviours.Operator
@@ -44,7 +44,8 @@ namespace SceneBehaviours.Operator
             runtimeDataForOperator.Index = 0;
             runtimeDataForOperator.StepButtons.Clear();
             runtimeDataForOperator.Steps.Steps.Clear();
-            
+
+            runtimeDataForOperator.Operation = Operation.Read(Application.persistentDataPath, OperationType.Operator).Data;
             var receivedSteps = await Get.GetStepsForOperationAsync(runtimeDataForOperator.Operation.OperationID, popupService);
 
             if(receivedSteps == null || receivedSteps.Steps.Count == 0) return;

@@ -13,6 +13,7 @@
         public string CommandVoice;
         public string ConfirmationVoice;
         public string DenialVoice;
+        public int? CopyHologramFromStep;
         public float PX;
         public float PY;
         public float PZ;

@@ -55,7 +55,7 @@ namespace Anchor
         private void TryLoadSpatialAnchor()
         {
             runtimeDataForManager.Clear();
-            runtimeDataForManager.Operation = Operation.Read(Application.persistentDataPath);
+            runtimeDataForManager.Operation = Operation.Read(Application.persistentDataPath, OperationType.Manager).Data;
 
             if (runtimeDataForManager.Operation.AnchorUuid != Guid.Empty) LoadSavedSpatialAnchorToScene();
             else

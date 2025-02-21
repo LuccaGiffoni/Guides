@@ -33,7 +33,8 @@ namespace PickPositions.Roles
         {
             foreach (var step in runtimeDataForOperator.Steps.Steps)
             {
-                if (step.SX == 0 || step.SY == 0 || step.SZ == 0) return;
+                if (step.SX == 0 || step.SY == 0 || step.SZ == 0)
+                    return;
                 
                 var position = new Vector3(step.PX, step.PY , step.PZ);
                 var rotation = new Quaternion(step.RX, step.RY, step.RZ, step.RW);
@@ -41,6 +42,9 @@ namespace PickPositions.Roles
             
                 var isPickPositionValid = Instantiate(pickPositionPrefab, position, Quaternion.identity,
                     runtimeDataForOperator.OVRSpatialAnchor.transform).TryGetComponent(out OperatorPickPosition createdPickPosition);
+                
+                if (step.CopyHologramFromStep == 0)
+                    continue;
                 
                 if (!isPickPositionValid)
                 {

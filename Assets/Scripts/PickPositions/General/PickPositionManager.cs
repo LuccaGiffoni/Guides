@@ -5,7 +5,6 @@ using KBCore.Refs;
 using Messages;
 using Services.Implementations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PickPositions.General
 {
@@ -42,7 +41,8 @@ namespace PickPositions.General
         
         public async void SaveActivePickPosition()
         {
-            if (isSaving) return;
+            if (isSaving)
+                return;
             
             foreach (var pickPosition in runtimeDataForManager.PickPositions)
             {
